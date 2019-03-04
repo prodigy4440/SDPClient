@@ -1,0 +1,20 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:loc="http://www.csapi.org/schema/parlayx/ussd/send/v1_0/local">
+    <soapenv:Header>
+        <tns:RequestSOAPHeader xmlns:tns="http://www.huawei.com.cn/schema/common/v2_1">
+            <tns:spId>sp_id</tns:spId>
+            <tns:spPassword>sp_password</tns:spPassword>
+            <tns:serviceId>service_id</tns:serviceId>
+            <tns:timeStamp>time_stamp</tns:timeStamp>
+            <tns:OA>fake_oa</tns:OA>
+            <tns:FA>fake_fa</tns:FA>
+        </tns:RequestSOAPHeader>
+    </soapenv:Header>
+    <soapenv:Body>
+        <loc:sendUssdAbort>
+            <loc:senderCB>sender_cb</loc:senderCB>
+            <loc:receiveCB>receiver_cb</loc:receiveCB>
+            <loc:abortReason>abort_reason</loc:abortReason>
+        </loc:sendUssdAbort>
+    </soapenv:Body>
+</soapenv:Envelope>

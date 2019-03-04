@@ -1,0 +1,23 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:v2="http://www.huawei.com.cn/schema/common/v2_1"
+                  xmlns:loc="http://www.csapi.org/schema/parlayx/sms/notification_manager/v2_3/local">
+    <soapenv:Header>
+        <RequestSOAPHeader xmlns="http://www.huawei.com.cn/schema/common/v2_1">
+            <spId>2340110004819</spId>
+            <spPassword>605821F27E4DCFEC5289386E3079C51B</spPassword>
+            <serviceId>234012000012033</serviceId>
+            <timeStamp>20170110154245</timeStamp>
+        </RequestSOAPHeader>
+    </soapenv:Header>
+    <soapenv:Body>
+        <loc:startSmsNotification>
+            <loc:reference>
+                <endpoint>http://10.138.38.139:9080/notify</endpoint>
+                <interfaceName>notifySmsReception</interfaceName>
+                <correlator>00001</correlator>
+            </loc:reference>
+            <loc:smsServiceActivationNumber>463</loc:smsServiceActivationNumber>
+            <loc:criteria>subscribe</loc:criteria>
+        </loc:startSmsNotification>
+    </soapenv:Body>
+</soapenv:Envelope>

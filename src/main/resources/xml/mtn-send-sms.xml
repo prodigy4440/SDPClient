@@ -1,0 +1,27 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v2="http://www.huawei.com.cn/schema/common/v2_1" xmlns:loc="http://www.csapi.org/schema/parlayx/sms/send/v2_2/local">
+    <soapenv:Header>
+        <v2:RequestSOAPHeader>
+            <v2:spId>sp_id</v2:spId>
+            <v2:spPassword>sp_password</v2:spPassword>
+            <v2:bundleID>bundle_id</v2:bundleID>
+            <v2:serviceId>service_id</v2:serviceId>
+            <v2:timeStamp>time_stamp</v2:timeStamp>
+            <v2:OA>o_a</v2:OA>
+            <v2:FA>fake_a</v2:FA>
+            <v2:linkid>link_id</v2:linkid>
+            <v2:presentid>present_id</v2:presentid>
+        </v2:RequestSOAPHeader>
+    </soapenv:Header>
+    <soapenv:Body>
+        <loc:sendSms>
+            <loc:addresses>end_user_phonenumber</loc:addresses>
+            <loc:senderName>sender_name</loc:senderName>
+            <loc:message>sms_message</loc:message>
+            <loc:receiptRequest>
+                <endpoint>notify_url</endpoint>
+                <interfaceName>SmsNotification</interfaceName>
+                <correlator>correlator_ref</correlator>
+        </loc:receiptRequest>
+        </loc:sendSms>
+    </soapenv:Body>
+</soapenv:Envelope>

@@ -1,0 +1,7 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:loc="http://www.csapi.org/schema/parlayx/subscribe/manage/v1_0/local">
+    <soapenv:Body>
+        <ns1:startUSSDNotificationResponse
+                xmlns:ns1="http://www.csapi.org/schema/osg/ussd/notification_manager/v1_0/local"/>
+    </soapenv:Body>
+</soapenv:Envelope>

@@ -1,0 +1,8 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <soapenv:Body>
+        <ns1:sendUssdResponse xmlns:ns1="http://www.csapi.org/schema/parlayx/ussd/send/v1_0/local">
+            <ns1:result>0</ns1:result>
+        </ns1:sendUssdResponse>
+    </soapenv:Body>
+</soapenv:Envelope>

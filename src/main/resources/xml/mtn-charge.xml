@@ -1,0 +1,27 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:loc="http://www.csapi.org/schema/parlayx/payment/amount_charging/v2_1/local">
+    <soapenv:Header>
+        <RequestSOAPHeader xmlns="http://www.huawei.com.cn/schema/common/v2_1">
+            <spId>sp_id</spId>
+            <spPassword>sp_password</spPassword>
+            <serviceId>service_id</serviceId>
+            <timeStamp>time_stamp</timeStamp>
+            <OA>end_user_phone_number</OA>
+            <!--<FA>989377123456</FA>-->
+            <!--<oauth_token>authorization_token</oauth_token>-->
+            <productId>product_id</productId>
+        </RequestSOAPHeader>
+    </soapenv:Header>
+    <soapenv:Body>
+        <loc:chargeAmount>
+            <loc:endUserIdentifier>end_user_phone_number</loc:endUserIdentifier>
+            <loc:charge>
+                <description>charge</description>
+                <currency>NGN</currency>
+                <amount>10000</amount>
+                <code>4523</code>
+            </loc:charge>
+            <loc:referenceCode>1</loc:referenceCode>
+        </loc:chargeAmount>
+    </soapenv:Body>
+</soapenv:Envelope>

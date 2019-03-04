@@ -1,0 +1,37 @@
+{
+  "soapenv:Envelope": {
+    "soapenv:Body": {
+      "ns2:notifyUssdReception": {
+        "ns2:codeScheme": 17,
+        "ns2:msgType": 0,
+        "ns2:serviceCode": 2929,
+        "xmlns:ns2": "http://www.csapi.org/schema/parlayx/ussd/notification/v1_0/local",
+        "ns2:ussdOpType": 1,
+        "ns2:ussdString": "*10086*01#",
+        "ns2:extensionInfo": {
+          "item": {
+            "value": "",
+            "key": ""
+          }
+        },
+        "ns2:senderCB": 320207133,
+        "ns2:receiveCB": "0xFFFFFFFF",
+        "ns2:msIsdn": 8613699991234
+      }
+    },
+    "xmlns:soapenv": "http://schemas.xmlsoap.org/soap/envelope/",
+    "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+    "soapenv:Header": {
+      "ns1:NotifySOAPHeader": {
+        "ns1:serviceId": 35000001000029,
+        "ns1:timeStamp": 20100731064245,
+        "xmlns:ns1": "http://www.huawei.com.cn/schema/common/v2_1",
+        "ns1:spRevpassword": "206D88BB7F3D154B130DD6E1E0B8828B",
+        "ns1:spId": "000201",
+        "ns1:linkid": 12345678901111,
+        "ns1:traceUniqueID": "404092403801104031047140004003",
+        "ns1:spRevId": 35000001
+      }
+    }
+  }
+}
