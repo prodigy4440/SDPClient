@@ -35,10 +35,11 @@ public class SDPClient {
 //                "http://154.113.0.202:8999/digitalpulse/api/v1.0/mtn/notify/sms",
 //                "744550456547");
 
-        sendUssd("2340110005999","ps_password","bundleid","timestamp",
-                "oa","fa",0,"sendercb","receivercb",
-                1,"2348131631151","55019","68",
-                "Hello World");
+//        sendUssd("2340110005999","ps_password","bundleid","timestamp",
+//                "oa","fa",0,"sendercb","receivercb",
+//                1,"2348131631151","55019","68",
+//                "Hello World");
+        sendUssdNew();
     }
 
     public static Status chargePhone(String spId, String spPassword, String timeStamp, String serviceId, String productId,
