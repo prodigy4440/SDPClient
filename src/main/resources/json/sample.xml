@@ -1,0 +1,26 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:loc="http://www.csapi.org/schema/parlayx/ussd/send/v1_0/local">
+    <soapenv:Header>
+        <tns:RequestSOAPHeader xmlns:tns="http://www.huawei.com.cn/schema/common/v2_1">
+            <tns:spId>2340110005999</tns:spId>
+            <tns:spPassword>EBE4FDDA369EF289CF77210F6E0FFF9B</tns:spPassword>
+            <tns:serviceId>234012000023788</tns:serviceId>
+            <tns:timeStamp>20170110154245</tns:timeStamp>
+            <tns:OA>2348138075679</tns:OA>
+            <tns:FA>2348138075679</tns:FA>
+            <tns:linkid>12345678901111</tns:linkid>
+        </tns:RequestSOAPHeader>
+    </soapenv:Header>
+    <soapenv:Body>
+        <loc:sendUssd>
+            <loc:msgType>0</loc:msgType>
+            <loc:senderCB>306909975</loc:senderCB>
+            <loc:receiveCB/>
+            <loc:ussdOpType>1</loc:ussdOpType>
+            <loc:msIsdn>2348131631151</loc:msIsdn>
+            <loc:serviceCode>*55019</loc:serviceCode>
+            <loc:codeScheme>68</loc:codeScheme>
+            <loc:ussdString>please select: Menuplease</loc:ussdString>
+        </loc:sendUssd>
+    </soapenv:Body>
+</soapenv:Envelope>

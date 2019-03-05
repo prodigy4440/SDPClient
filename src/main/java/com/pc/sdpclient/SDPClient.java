@@ -283,4 +283,22 @@ public class SDPClient {
             return new Status(false, e.getMessage());
         }
     }
+
+    public static Status sendUssdNew(){
+        String requestXml = FileUtil.loadXmlFile("json/sample.xml");
+        MediaType mediaType = MediaType.parse("application/xml");
+        RequestBody requestBody = RequestBody.create(mediaType, requestXml);
+
+        Request request = new Request.Builder()
+                .url(MtnUrl.SEND_USSD())
+                .post(requestBody).build();
+        try {
+            Response response = OkHttpUtil.getHttpClient().newCall(request).execute();
+            String xmlResponse = response.body().string();
+            Status status = MtnXmlParser.parseMtnAbortUssd(xmlResponse);
+            return status;
+        } catch (IOException e) {
+            return new Status(false, e.getMessage());
+        }
+    }
 }
