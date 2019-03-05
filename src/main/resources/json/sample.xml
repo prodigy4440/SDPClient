@@ -4,7 +4,7 @@
         <RequestSOAPHeader xmlns:tns="http://www.huawei.com.cn/schema/common/v2_1">
             <spId>2340110005999</spId>
             <spPassword>EBE4FDDA369EF289CF77210F6E0FFF9B</spPassword>
-            <serviceId>service_id</serviceId>
+            <serviceId>234012000023788</serviceId>
             <timeStamp>20170110154245</timeStamp>
             <OA>2348138075679</OA>
             <FA>2348138075679</FA>
