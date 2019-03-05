@@ -8,7 +8,6 @@
             <tns:timeStamp>20170110154245</tns:timeStamp>
             <tns:OA>2348138075679</tns:OA>
             <tns:FA>2348138075679</tns:FA>
-            <tns:linkid>12345678901111</tns:linkid>
         </tns:RequestSOAPHeader>
     </soapenv:Header>
     <soapenv:Body>
