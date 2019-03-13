@@ -218,7 +218,7 @@ public class SDPClient {
         }
     }
 
-    public static Status sendUssd(String spId, String spPassword, String bundleId, String timestamp,
+    public static Status sendUssd(String spId, String spPassword, String serviceId, String bundleId, String timestamp,
                                   String oa, String fa, Integer msgType, String senderCb,
                                   String receiverCb, Integer msgOpType, String msisdn, String serviceCode,
                                   String codeScheme, String ussdString){
@@ -228,6 +228,7 @@ public class SDPClient {
                 .replaceAll("sp_password",spPassword)
                 .replaceAll("bundle_id",bundleId)
                 .replaceAll("time_stamp",timestamp)
+                .replaceAll("service_id", serviceId)
                 .replaceAll("fake_oa",oa)
                 .replaceAll("fake_fa",fa)
                 .replaceAll("msg_type", String.valueOf(msgType))

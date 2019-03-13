@@ -5,6 +5,7 @@
             <tns:spId>sp_id</tns:spId>
             <tns:spPassword>sp_password</tns:spPassword>
             <tns:bundleID>bundle_id</tns:bundleID>
+            <tns:serviceId>service_id</tns:serviceId>
             <tns:timeStamp>time_stamp</tns:timeStamp>
             <tns:OA>fake_oa</tns:OA>
             <tns:FA>fake_fa</tns:FA>
