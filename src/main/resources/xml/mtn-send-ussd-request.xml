@@ -14,7 +14,7 @@
         <loc:sendUssd>
             <loc:msgType>msg_type</loc:msgType>
             <loc:senderCB>sender_cb</loc:senderCB>
-            <loc:receiveCB/>
+            <loc:receiveCB>receive_cb</loc:receiveCB>
             <loc:ussdOpType>ussd_op_type</loc:ussdOpType>
             <loc:msIsdn>user_phone_number</loc:msIsdn>
             <loc:serviceCode>service_code</loc:serviceCode>

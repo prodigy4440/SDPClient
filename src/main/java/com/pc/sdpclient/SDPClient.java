@@ -232,6 +232,7 @@ public class SDPClient {
                 .replaceAll("fake_fa",fa)
                 .replaceAll("msg_type", String.valueOf(msgType))
                 .replaceAll("sender_cb", senderCb)
+                .replaceAll("receive_cb", receiverCb)
                 .replaceAll("ussd_op_type", String.valueOf(msgOpType))
                 .replaceAll("user_phone_number", msisdn)
                 .replaceAll("service_code", serviceCode)
@@ -266,7 +267,7 @@ public class SDPClient {
                 .replaceAll("fake_oa",oa)
                 .replaceAll("fake_fa",fa)
                 .replaceAll("sender_cb", senderCb)
-                .replaceAll("receiver_cb", senderCb)
+                .replaceAll("receive_cb", receiverCb)
                 .replaceAll("abort_reason", abortReason);
         MediaType mediaType = MediaType.parse("application/xml");
         RequestBody requestBody = RequestBody.create(mediaType, xmlRequest);
