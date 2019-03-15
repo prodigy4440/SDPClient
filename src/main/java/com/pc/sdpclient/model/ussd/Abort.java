@@ -30,6 +30,7 @@ public class Abort implements Serializable {
 
     @JsonProperty("Header")
     public void unpackHeader(Map<String, Object> header) {
+        System.out.println(header);
         Map<String, Object> innerHeader = (Map<String, Object>) header.get("NotifySOAPHeader");
         this.header.setSpId(String.valueOf(innerHeader.get("spId")));
         this.header.setServiceId(String.valueOf(innerHeader.get("serviceId")));

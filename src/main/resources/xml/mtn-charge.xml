@@ -18,7 +18,7 @@
             <loc:charge>
                 <description>charge</description>
                 <currency>NGN</currency>
-                <amount>10000</amount>
+                <amount>charge_amount</amount>
                 <code>4523</code>
             </loc:charge>
             <loc:referenceCode>1</loc:referenceCode>

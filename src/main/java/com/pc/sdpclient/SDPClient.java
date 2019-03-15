@@ -39,17 +39,17 @@ public class SDPClient {
 //                "oa","fa",0,"sendercb","receivercb",
 //                1,"2348131631151","55019","68",
 //                "Hello World");
-        sendUssdNew();
     }
 
     public static Status chargePhone(String spId, String spPassword, String timeStamp, String serviceId, String productId,
-                                     String phoneNumber) {
+                                     String phoneNumber, Integer amount) {
         String xmlRequest = FileUtil.loadXmlFile("xml/mtn-charge.xml")
                 .replaceAll("sp_id", spId)
                 .replaceAll("sp_password", spPassword)
                 .replaceAll("time_stamp", timeStamp)
                 .replaceAll("product_id", productId)
                 .replaceAll("service_id", serviceId)
+                .replaceAll("charge_amount", String.valueOf(amount))
                 .replaceAll("end_user_phone_number", phoneNumber);
         MediaType mediaType = MediaType.parse("application/xml");
         RequestBody requestBody = RequestBody.create(mediaType, xmlRequest);
@@ -287,21 +287,5 @@ public class SDPClient {
         }
     }
 
-    public static Status sendUssdNew(){
-        String requestXml = FileUtil.loadXmlFile("json/sample.xml");
-        MediaType mediaType = MediaType.parse("application/xml");
-        RequestBody requestBody = RequestBody.create(mediaType, requestXml);
 
-        Request request = new Request.Builder()
-                .url(MtnUrl.SEND_USSD())
-                .post(requestBody).build();
-        try {
-            Response response = OkHttpUtil.getHttpClient().newCall(request).execute();
-            String xmlResponse = response.body().string();
-            Status status = MtnXmlParser.parseMtnAbortUssd(xmlResponse);
-            return status;
-        } catch (IOException e) {
-            return new Status(false, e.getMessage());
-        }
-    }
 }
