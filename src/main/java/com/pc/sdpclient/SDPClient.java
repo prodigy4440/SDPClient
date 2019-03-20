@@ -27,7 +27,7 @@ public class SDPClient {
         sendAuthorizationRequest("2340110005999","F0E139532F43210A1DB9077C4B0FD06E",
                 "20190313095640", "234012000023788",
                 "2348131631151",transactionId,
-                17,5000,"NGN","Jamb Digital Service");
+                17,5000,"NGN","Jamb Digital Service", 1);
 
     }
 
@@ -281,7 +281,8 @@ public class SDPClient {
     public static Status sendAuthorizationRequest(String spId, String spPassword, String timestamp,
                                                   String serviceId, String phoneNumber,
                                                   String transactionId, Integer scope,
-                                       Integer amount, String currency, String description){
+                                       Integer amount, String currency, String description,
+                                                  Integer frequency){
         String xmlRequest = FileUtil.loadXmlFile("xml/mtn-authorization-request.xml")
                 .replaceAll("sp_id", spId)
                 .replaceAll("sp_password",spPassword)
@@ -292,7 +293,8 @@ public class SDPClient {
                 .replaceAll("service_id",serviceId)
                 .replaceAll("service_amount",String.valueOf(amount))
                 .replaceAll("country_currency",currency)
-                .replaceAll("service_description",description);
+                .replaceAll("service_description",description)
+                .replaceAll("auth_frequency", String.valueOf(frequency));
 
         System.out.println(xmlRequest);
         MediaType mediaType = MediaType.parse("application/xml");

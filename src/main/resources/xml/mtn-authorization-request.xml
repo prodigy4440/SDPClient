@@ -16,6 +16,7 @@
             <v1:serviceId>service_id</v1:serviceId>
             <v1:amount>service_amount</v1:amount>
             <v1:currency>country_currency</v1:currency>
+            <v1:frequency>auth_frequency</v1:frequency>
             <v1:description>service_description</v1:description>
         </v1:authorization>
     </soapenv:Body>
