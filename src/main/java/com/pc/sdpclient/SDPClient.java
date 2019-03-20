@@ -6,6 +6,7 @@
 package com.pc.sdpclient;
 
 import com.pc.sdpclient.model.Status;
+import com.pc.sdpclient.model.authorization.AuthRequest;
 import com.pc.sdpclient.util.*;
 
 import java.io.IOException;
@@ -24,8 +25,14 @@ public class SDPClient {
 
         String transactionId = TransactionUtil.generateTransactionId(MtnUrl.IP(),1,1);
         System.out.println("Transaction Id: "+transactionId);
-        sendAuthorizationRequest("2340110005999","F0E139532F43210A1DB9077C4B0FD06E",
-                "20190313095640", "234012000023788",
+
+        UrlConfig urlConfig = new UrlConfig.Builder().build();
+
+        ServiceConfig serviceConfig = new ServiceConfig.Builder()
+                .setSpId("2340110005999").setSpPassword("F0E139532F43210A1DB9077C4B0FD06E")
+                .setTimestamp("20190313095640").setServiceId("234012000023788").build();
+
+        sendAuthorizationRequest(urlConfig,serviceConfig,
                 "2348131631151",transactionId,
                 17,5000,"NGN","Jamb Digital Service", 1);
 
@@ -41,6 +48,7 @@ public class SDPClient {
                 .replaceAll("service_id", serviceId)
                 .replaceAll("charge_amount", String.valueOf(amount))
                 .replaceAll("end_user_phone_number", phoneNumber);
+
         MediaType mediaType = MediaType.parse("application/xml");
         RequestBody requestBody = RequestBody.create(mediaType, xmlRequest);
 
@@ -312,6 +320,33 @@ public class SDPClient {
             return status;
         } catch (IOException e) {
             return new Status(false, e.getMessage());
+        }
+    }
+
+
+    public static Status sendAuthorizationRequest(UrlConfig urlConfig, ServiceConfig serviceConfig, String phoneNumber,
+                                                  String transactionId, Integer scope,
+                                                  Integer amount, String currency, String description,
+                                                  Integer frequency){
+        String xmlRequest = FileUtil.loadXmlFile("xml/mtn-authorization-request.xml")
+                .replaceAll("sp_id", serviceConfig.getSpId())
+                .replaceAll("sp_password",serviceConfig.getSpPassword())
+                .replaceAll("time_stamp",serviceConfig.getTimestamp())
+                .replaceAll("end_user_identifier",phoneNumber)
+                .replaceAll("transaction_id",transactionId)
+                .replaceAll("auth_scope",String.valueOf(scope))
+                .replaceAll("service_id",serviceConfig.getServiceId())
+                .replaceAll("service_amount",String.valueOf(amount))
+                .replaceAll("country_currency",currency)
+                .replaceAll("service_description",description)
+                .replaceAll("auth_frequency", String.valueOf(frequency));
+
+        Status<String> postStatus = SdpConnector.post(urlConfig.getAuthorization(), xmlRequest);
+
+        if(postStatus.getStatus()){
+            return MtnXmlParser.parserMtnAuthorizationRequest(postStatus.getData());
+        }else{
+            return postStatus;
         }
     }
 
