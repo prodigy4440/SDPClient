@@ -27,7 +27,7 @@ public class SDPClient {
         sendAuthorizationRequest("2340110005999","F0E139532F43210A1DB9077C4B0FD06E",
                 "20190313095640", "234012000023788",
                 "2348131631151",transactionId,
-                79,5000,"NGN","Jamb Digital Service");
+                17,5000,"NGN","Jamb Digital Service");
 
     }
 
