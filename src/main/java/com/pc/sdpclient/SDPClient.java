@@ -343,8 +343,11 @@ public class SDPClient {
 
         Status<String> postStatus = SdpConnector.post(urlConfig.getAuthorization(), xmlRequest);
 
+        System.out.println(xmlRequest);
         if(postStatus.getStatus()){
-            return MtnXmlParser.parserMtnAuthorizationRequest(postStatus.getData());
+            String xmlResponse = postStatus.getData();
+            System.out.println(xmlResponse);
+            return MtnXmlParser.parserMtnAuthorizationRequest(xmlResponse);
         }else{
             return postStatus;
         }
