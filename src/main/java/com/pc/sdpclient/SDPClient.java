@@ -21,24 +21,11 @@ import okhttp3.Response;
 public class SDPClient {
 
     public static void main(String[] args) {
-//        Status status = chargePhone(Constant.SPID, Constant.SPPASSWORD,
-//                Constant.TIMESTAMP, Constant.ACADA_STANDARD_PLAN_SERVICE_ID,
-//                Constant.ACADA_STANDARD_PLAN_PRODUCT_ID, "2348131631151");
-//        System.out.println(status);
-//        String ibro = "2347031900599";
-//        Status status1 = subscribePhone(Constant.SPID, Constant.SPPASSWORD, Constant.TIMESTAMP, Constant.ACADA_WEEKLY_PLAN_PRODUCT_ID, "2348131631151");
-//        System.out.println(status1);
-//        Status status2 = unsubscribePhone(Constant.SPID, Constant.SPPASSWORD, Constant.TIMESTAMP, Constant.ACADA_WEEKLY_PLAN_PRODUCT_ID, "2348131631151");
-//        System.out.println(status2);
-//        Status smsStatus = sendSms(Constant.SPID, Constant.SPPASSWORD, "", Constant.ACADA_SMS_SERVICE_ID, Constant.TIMESTAMP, "2348138075679",
-//                "2348138075679", "", "", "162", "2348166721550", "Sample message",
-//                "http://154.113.0.202:8999/digitalpulse/api/v1.0/mtn/notify/sms",
-//                "744550456547");
 
-//        sendUssd("2340110005999","ps_password","bundleid","timestamp",
-//                "oa","fa",0,"sendercb","receivercb",
-//                1,"2348131631151","55019","68",
-//                "Hello World");
+        sendAuthorizationRequest("spid","sppassword","time",
+                "serviceid", "2348131631151","transaction",
+                79,5000,"NGN","Jamb Digital Service");
+
     }
 
     public static Status chargePhone(String spId, String spPassword, String timeStamp, String serviceId, String productId,
@@ -281,6 +268,42 @@ public class SDPClient {
             Response response = OkHttpUtil.getHttpClient().newCall(request).execute();
             String xmlResponse = response.body().string();
             Status status = MtnXmlParser.parseMtnAbortUssd(xmlResponse);
+            return status;
+        } catch (IOException e) {
+            return new Status(false, e.getMessage());
+        }
+    }
+
+
+    public static Status sendAuthorizationRequest(String spId, String spPassword, String timestamp,
+                                                  String serviceId, String phoneNumber,
+                                                  String transactionId, Integer scope,
+                                       Integer amount, String currency, String description){
+        String xmlRequest = FileUtil.loadXmlFile("xml/mtn-authorization-request.xml")
+                .replaceAll("sp_id", spId)
+                .replaceAll("sp_password",spPassword)
+                .replaceAll("time_stamp",timestamp)
+                .replaceAll("end_user_identifier",phoneNumber)
+                .replaceAll("transaction_id",transactionId)
+                .replaceAll("auth_scope",String.valueOf(scope))
+                .replaceAll("service_id",serviceId)
+                .replaceAll("service_amount",String.valueOf(amount))
+                .replaceAll("country_currency",currency)
+                .replaceAll("service_description",description);
+
+        System.out.println(xmlRequest);
+        MediaType mediaType = MediaType.parse("application/xml");
+        RequestBody requestBody = RequestBody.create(mediaType, xmlRequest);
+
+        Request request = new Request.Builder()
+                .url(MtnUrl.AUTHORIZATION())
+                .post(requestBody).build();
+
+        try {
+            Response response = OkHttpUtil.getHttpClient().newCall(request).execute();
+            String xmlResponse = response.body().string();
+            System.out.println(xmlResponse);
+            Status status = MtnXmlParser.parserMtnAuthorizationRequest(xmlResponse);
             return status;
         } catch (IOException e) {
             return new Status(false, e.getMessage());

@@ -16,7 +16,11 @@ public class MtnUrl {
     private static final String SCHEMA = "http";
     private static final String HOST = "41.206.4.162";
     private static final Integer PORT = 8310;
-    
+
+    public static final String IP(){
+        return HOST;
+    }
+
     public static HttpUrl CHARGE(){
         return new HttpUrl.Builder()
                 .scheme(SCHEMA)
@@ -71,5 +75,16 @@ public class MtnUrl {
                 .addPathSegment("USSDNotificationManager")
                 .build();
     }
-    
+
+    public static HttpUrl AUTHORIZATION(){
+        return new HttpUrl.Builder()
+                .scheme(SCHEMA)
+                .host(HOST)
+                .port(PORT)
+                .addPathSegment("authorizationService")
+                .addPathSegment("services")
+                .addPathSegment("authorization")
+                .build();
+    }
+
 }

@@ -3,6 +3,7 @@ package com.pc.sdpclient.util;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.pc.sdpclient.model.Status;
+import com.pc.sdpclient.model.authorization.AuthRequest;
 import com.pc.sdpclient.model.ussd.Abort;
 import com.pc.sdpclient.model.ussd.Ussd;
 import org.json.JSONException;
@@ -153,12 +154,11 @@ public class MtnXmlParser {
         return xml;
     }
 
-    public static Status parseMtnUssdNotifyAbortion(String xml) {
+    public static Status<Abort> parseMtnUssdNotifyAbortion(String xml) {
         Abort abort;
-
+        String json = JsonUtil.xmlToJson(xml);
         try {
-            System.out.println(xml);
-            abort = JsonUtil.getJsonMapper().readValue(JsonUtil.xmlToJson(xml), Abort.class);
+            abort = JsonUtil.getJsonMapper().readValue(json, Abort.class);
             return new Status(true, "Success", abort);
         } catch (JsonMappingException jme) {
             jme.printStackTrace();
@@ -169,18 +169,22 @@ public class MtnXmlParser {
         }
     }
 
+
+    public static Status<AuthRequest> parserMtnAuthorizationRequest(String xml){
+        String json = JsonUtil.xmlToJson(xml);
+        try {
+            AuthRequest authRequest = JsonUtil.getJsonMapper().readValue(json, AuthRequest.class);
+            System.out.println(authRequest);
+            return new Status(true, "Success", authRequest);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new Status<>(false, e.getMessage());
+        }
+    }
+
     public static String getMtnUssdNotifyAbortResponse() {
         String xml = FileUtil.loadXmlFile("xml/mtn-notify-ussd-abort-response.xml");
         return xml;
-    }
-
-    public static void main(String args []){
-        String xml = "<?xml version=\"1.0\" encoding=\"utf-8\" ?><soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><soapenv:Header><ns1:NotifySOAPHeader xmlns:ns1=\"http://www.huawei.com.cn/schema/common/v2_1\"><ns1:spId>2340110005999</ns1:spId><ns1:serviceId>234012000023788</ns1:serviceId><ns1:timeStamp>20190313131202</ns1:timeStamp><ns1:traceUniqueID>100201200101190313131202430801</ns1:traceUniqueID></ns1:NotifySOAPHeader></soapenv:Header><soapenv:Body><ns2:notifyUssdAbort xmlns:ns2=\"http://www.csapi.org/schema/parlayx/ussd/notification/v1_0/local\"><ns2:senderCB>17960189</ns2:senderCB><ns2:receiveCB>17960189</ns2:receiveCB><ns2:abortReason>Session Timeout.</ns2:abortReason></ns2:notifyUssdAbort></soapenv:Body></soapenv:Envelope>";
-
-        Status status = parseMtnAbortUssd(xml);
-        System.out.println(status);
-        Abort abort = (Abort) status.getData();
-        System.out.println(abort);
     }
 
 }
