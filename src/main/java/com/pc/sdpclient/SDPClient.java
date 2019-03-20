@@ -22,8 +22,11 @@ public class SDPClient {
 
     public static void main(String[] args) {
 
-        sendAuthorizationRequest("spid","sppassword","time",
-                "serviceid", "2348131631151","transaction",
+        String transactionId = TransactionUtil.generateTransactionId(MtnUrl.IP(),1,1);
+        System.out.println("Transaction Id: "+transactionId);
+        sendAuthorizationRequest("2340110005999","F0E139532F43210A1DB9077C4B0FD06E",
+                "20190313095640", "234012000023788",
+                "2348131631151",transactionId,
                 79,5000,"NGN","Jamb Digital Service");
 
     }
