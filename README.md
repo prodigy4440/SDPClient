@@ -1,6 +1,6 @@
 # SDPClient
 
-This a java utility for connecting to MTN HSDP platform
+Java utility for connecting to MTN HSDP platform
 
 + Build System
   1. Maven
