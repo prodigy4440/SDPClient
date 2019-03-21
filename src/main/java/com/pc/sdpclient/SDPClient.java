@@ -37,7 +37,7 @@ public class SDPClient {
         logger.info("UrlConfig {}",urlConfig);
 
         ServiceConfig serviceConfig = new ServiceConfig.Builder()
-                .setSpId("2340110005999")
+                .setSpId("25999")
                 .setSpPassword("F0E139532F43210A1DB9077C4B0FD06E")
                 .setTimestamp("20190313095640")
                 .setServiceId("234012000023788")
