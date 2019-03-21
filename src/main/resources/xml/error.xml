@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <soapenv:Body>
+        <soapenv:Fault>
+            <faultcode>SVC0901</faultcode>
+            <faultstring>SPID 25999 is not exist!</faultstring>
+            <detail>
+                <ns1:ServiceException xmlns:ns1="http://www.csapi.org/schema/parlayx/common/v2_1">
+                    <messageId>SVC0901</messageId>
+                    <text>SPID 25999 is not exist!</text>
+                    <variables>25999</variables>
+                </ns1:ServiceException>
+            </detail>
+        </soapenv:Fault>
+    </soapenv:Body>
+</soapenv:Envelope>

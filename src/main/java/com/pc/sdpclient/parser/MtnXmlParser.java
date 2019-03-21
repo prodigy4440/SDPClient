@@ -2,6 +2,7 @@ package com.pc.sdpclient.parser;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.pc.sdpclient.model.Fault;
 import com.pc.sdpclient.model.Status;
 import com.pc.sdpclient.model.authorization.AuthRequest;
 import com.pc.sdpclient.model.ussd.Abort;
@@ -10,11 +11,15 @@ import com.pc.sdpclient.util.FileUtil;
 import com.pc.sdpclient.util.JsonUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Objects;
 
 public class MtnXmlParser {
+
+    private static Logger logger = LoggerFactory.getLogger(MtnXmlParser.class);
 
     public static Status parseMtnResponse(String xml, String mainTag, String subTag) {
         if (Objects.isNull(xml) || xml.isEmpty()) {
@@ -171,7 +176,6 @@ public class MtnXmlParser {
         }
     }
 
-
     public static Status<AuthRequest> parserMtnAuthorizationRequest(String xml){
         String json = JsonUtil.xmlToJson(xml);
         try {
@@ -189,4 +193,14 @@ public class MtnXmlParser {
         return xml;
     }
 
+    public static Status<Fault> parseFault(String xml){
+        String json = JsonUtil.xmlToJson(xml);
+        try {
+            Fault fault = JsonUtil.getJsonMapper().readValue(json, Fault.class);
+            return new Status<>(false, fault.getDescription(), fault);
+        } catch (IOException e) {
+            logger.error("IOException", e);
+            return new Status<>(false, e.getLocalizedMessage());
+        }
+    }
 }

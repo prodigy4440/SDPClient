@@ -40,7 +40,12 @@ public class Integrator {
         Status<String> postStatus = SdpConnector.post(getUrlConfig().getChargeUrl(), xmlRequest);
 
         if(postStatus.getStatus()){
-            return MtnXmlParser.parseMtnChargeXml(postStatus.getData());
+            String resp = postStatus.getData();
+            if(resp.contains("faultstring")){
+                return MtnXmlParser.parseFault(resp);
+            }else{
+                return MtnXmlParser.parseMtnChargeXml(postStatus.getData());
+            }
         }else{
             return postStatus;
         }
