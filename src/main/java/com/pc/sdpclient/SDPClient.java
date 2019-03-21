@@ -41,6 +41,9 @@ public class SDPClient {
                 .setSpPassword("F0E139532F43210A1DB9077C4B0FD06E")
                 .setTimestamp("20190313095640")
                 .setServiceId("234012000023788")
+                .setProductId("23401220000027529")
+                .setUssdServiceActivationNumber("*55019")
+                .setCorrelator("234012000023788")
                 .build();
 
         Integrator integrator = new Integrator.Builder().addUrl(urlConfig).addService(serviceConfig).build();
