@@ -1,4 +1,4 @@
-package com.pc.sdpclient.util;
+package com.pc.sdpclient.parser;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -6,6 +6,8 @@ import com.pc.sdpclient.model.Status;
 import com.pc.sdpclient.model.authorization.AuthRequest;
 import com.pc.sdpclient.model.ussd.Abort;
 import com.pc.sdpclient.model.ussd.Ussd;
+import com.pc.sdpclient.util.FileUtil;
+import com.pc.sdpclient.util.JsonUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 

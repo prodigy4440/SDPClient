@@ -1,4 +1,4 @@
-package com.pc.sdpclient.util;
+package com.pc.sdpclient.config;
 
 public class ServiceConfig {
 
@@ -275,4 +275,8 @@ public class ServiceConfig {
         }
     }
 
+    @Override
+    public String toString() {
+        return "ServiceConfig{" + "spId='" + spId + '\'' + ", spPassword='" + spPassword + '\'' + ", timestamp='" + timestamp + '\'' + ", serviceId='" + serviceId + '\'' + ", productId='" + productId + '\'' + ", reference='" + reference + '\'' + ", smsServiceActivationNumber='" + smsServiceActivationNumber + '\'' + ", ussdServiceActivationNumber='" + ussdServiceActivationNumber + '\'' + ", criteria='" + criteria + '\'' + ", endpoint='" + endpoint + '\'' + ", interfaceName='" + interfaceName + '\'' + ", correlator='" + correlator + '\'' + ", linkid='" + linkid + '\'' + ", traceUniqueID='" + traceUniqueID + '\'' + ", oauthToken='" + oauthToken + '\'' + ", userID='" + userID + '\'' + ", operCode='" + operCode + '\'' + ", isAutoExtend='" + isAutoExtend + '\'' + ", channelID='" + channelID + '\'' + '}';
+    }
 }

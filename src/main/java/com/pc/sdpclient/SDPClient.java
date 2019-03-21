@@ -5,8 +5,11 @@
  */
 package com.pc.sdpclient;
 
+import com.pc.sdpclient.config.ServiceConfig;
+import com.pc.sdpclient.config.UrlConfig;
 import com.pc.sdpclient.model.Status;
-import com.pc.sdpclient.model.authorization.AuthRequest;
+import com.pc.sdpclient.network.SdpConnector;
+import com.pc.sdpclient.parser.MtnXmlParser;
 import com.pc.sdpclient.util.*;
 
 import java.io.IOException;
@@ -26,20 +29,30 @@ public class SDPClient {
     private static Logger logger = LoggerFactory.getLogger(SdpConnector.class);
 
     public static void main(String[] args) {
-
-        String transactionId = TransactionUtil.generateTransactionId(MtnUrl.IP(),1,1);
-
-        logger.info("Transaction ID: {}", transactionId);
+//
+//        String transactionId = TransactionUtil.generateTransactionId(MtnUrl.IP(),1,1);
+//
+//        logger.info("Transaction ID: {}", transactionId);
         UrlConfig urlConfig = new UrlConfig.Builder().build();
         logger.info("UrlConfig {}",urlConfig);
 
         ServiceConfig serviceConfig = new ServiceConfig.Builder()
-                .setSpId("2340110005999").setSpPassword("F0E139532F43210A1DB9077C4B0FD06E")
-                .setTimestamp("20190313095640").setServiceId("234012000023788").build();
+                .setSpId("2340110005999")
+                .setSpPassword("F0E139532F43210A1DB9077C4B0FD06E")
+                .setTimestamp("20190313095640")
+                .setServiceId("234012000023788")
+                .build();
 
-        sendAuthorizationRequest(urlConfig,serviceConfig,
-                "2348131631151",transactionId,
-                17,5000,"NGN","Jamb Digital Service", 1);
+        Integrator integrator = new Integrator.Builder().addUrl(urlConfig).addService(serviceConfig).build();
+        Status status = integrator.chargePhone("2348131631151", 100);
+        logger.info("Status {}", status);
+
+//        Integrator integrator = new Integrator.Builder().addUrl(urlConfig).addService(serviceConfig).build();
+//
+//        sendAuthorizationRequest(urlConfig,serviceConfig,
+//                "2348131631151",transactionId,
+//                17,5000,"NGN","Jamb Digital Service", 1);
+
 
     }
 
@@ -327,7 +340,6 @@ public class SDPClient {
             return new Status(false, e.getMessage());
         }
     }
-
 
     public static Status sendAuthorizationRequest(UrlConfig urlConfig, ServiceConfig serviceConfig, String phoneNumber,
                                                   String transactionId, Integer scope,

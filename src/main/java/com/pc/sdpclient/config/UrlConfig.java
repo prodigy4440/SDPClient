@@ -1,4 +1,4 @@
-package com.pc.sdpclient.util;
+package com.pc.sdpclient.config;
 
 import okhttp3.HttpUrl;
 
@@ -136,4 +136,9 @@ public class UrlConfig {
         }
     }
 
+    @Override
+    public String toString() {
+        return "UrlConfig{" + "schema='" + schema + '\'' + ", host='"
+                + host + '\'' + ", port=" + port + '}';
+    }
 }
