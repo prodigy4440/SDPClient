@@ -98,7 +98,11 @@ public class SDPClient {
                 .addService(acadaSmsService)
                 .build();
 
-        Status status = acadaOnDemandIntegrator.chargePhone("2348131631151", 100);
+        String phoneNumber = "2348131631151";
+
+        Status status = acadaOnDemandIntegrator.subscribePhone(phoneNumber);
+//        Status status = acadaOnDemandIntegrator.chargePhone("2348131631151", 100);
+
         logger.info("{}", status);
 
 //        Integrator integrator = new Integrator.Builder().addUrl(urlConfig).addService(serviceConfig).build();

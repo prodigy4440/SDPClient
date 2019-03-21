@@ -52,8 +52,7 @@ public class Integrator {
     }
 
 
-    public Status subscribePhone(String spId, String spPassword, String timeStamp, String productId,
-                                        String phoneNumber) {
+    public Status subscribePhone(String phoneNumber) {
         String xmlRequest = FileUtil.loadXmlFile("xml/mtn-subscribe.xml")
                 .replaceAll("sp_id", getServiceConfig().getSpId())
                 .replaceAll("sp_password", getServiceConfig().getSpPassword())
