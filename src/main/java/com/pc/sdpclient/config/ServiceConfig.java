@@ -40,6 +40,10 @@ public class ServiceConfig {
 
     private String channelID;
 
+    private String oa;
+
+    private String fa;
+
 
     private ServiceConfig() {
     }
@@ -49,7 +53,7 @@ public class ServiceConfig {
                          String smsServiceActivationNumber, String ussdServiceActivationNumber,
                          String criteria, String endpoint, String interfaceName, String correlator,
                          String linkid, String traceUniqueID, String oauthToken, String userID,
-                         String operCode, String isAutoExtend, String channelID) {
+                         String operCode, String isAutoExtend, String channelID, String oa, String fa) {
         this.spId = spId;
         this.spPassword = spPassword;
         this.timestamp = timestamp;
@@ -69,6 +73,8 @@ public class ServiceConfig {
         this.operCode = operCode;
         this.isAutoExtend = isAutoExtend;
         this.channelID = channelID;
+        this.oa = oa;
+        this.fa = fa;
     }
 
     public String getSpId() {
@@ -147,7 +153,13 @@ public class ServiceConfig {
         return channelID;
     }
 
+    public String getOa(){
+        return oa;
+    }
 
+    public String getFa(){
+        return fa;
+    }
 
     public static class Builder {
 
@@ -170,7 +182,8 @@ public class ServiceConfig {
         private String operCode;
         private String isAutoExtend;
         private String channelID;
-
+        private String oa;
+        private String fa;
 
         public Builder setSpId(String spId) {
             this.spId = spId;
@@ -267,11 +280,21 @@ public class ServiceConfig {
             return this;
         }
 
+        public Builder setOa(String oa){
+            this.oa = oa;
+            return this;
+        }
+
+        public Builder setFa(String fa){
+            this.fa = fa;
+            return this;
+        }
+
         public ServiceConfig build() {
             return new ServiceConfig(spId, spPassword, timestamp, serviceId, productId,
                     reference, smsServiceActivationNumber, ussdServiceActivationNumber,
                     criteria, endpoint, interfaceName, correlator, linkid, traceUniqueID,
-                    oauthToken, userID, operCode, isAutoExtend, channelID);
+                    oauthToken, userID, operCode, isAutoExtend, channelID, oa, fa);
         }
     }
 

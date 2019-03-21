@@ -51,6 +51,33 @@ public class Integrator {
         }
     }
 
+
+    public Status subscribePhone(String spId, String spPassword, String timeStamp, String productId,
+                                        String phoneNumber) {
+        String xmlRequest = FileUtil.loadXmlFile("xml/mtn-subscribe.xml")
+                .replaceAll("sp_id", getServiceConfig().getSpId())
+                .replaceAll("sp_password", getServiceConfig().getSpPassword())
+                .replaceAll("time_stamp", getServiceConfig().getTimestamp())
+                .replaceAll("product_id", getServiceConfig().getProductId())
+                .replaceAll("end_user_phone_number", phoneNumber);
+
+
+        Status<String> postStatus = SdpConnector.post(getUrlConfig().getSubscribe(), xmlRequest);
+
+
+        if(postStatus.getStatus()){
+            String resp = postStatus.getData();
+            System.out.println(resp);
+            if(resp.contains("faultstring")){
+                return MtnXmlParser.parseFault(resp);
+            }else{
+                return null;
+            }
+        }else{
+            return postStatus;
+        }
+    }
+
     private UrlConfig getUrlConfig(){
         return this.urlConfig;
     }

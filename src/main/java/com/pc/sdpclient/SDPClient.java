@@ -33,12 +33,14 @@ public class SDPClient {
 //        String transactionId = TransactionUtil.generateTransactionId(MtnUrl.IP(),1,1);
 //
 //        logger.info("Transaction ID: {}", transactionId);
-        UrlConfig urlConfig = new UrlConfig.Builder().build();
-        logger.info("UrlConfig {}",urlConfig);
+        UrlConfig urlConfig = new UrlConfig.Builder()
+                .build();
 
-        ServiceConfig serviceConfig = new ServiceConfig.Builder()
+        logger.info("{}",urlConfig);
+
+        ServiceConfig jambUssdService = new ServiceConfig.Builder()
                 .setSpId("2340110005999")
-                .setSpPassword("F0E143210A1DB9077C4B0FD06E")
+                .setSpPassword("F0E139532F43210A1DB9077C4B0FD06E")
                 .setTimestamp("20190313095640")
                 .setServiceId("234012000023788")
                 .setProductId("23401220000027529")
@@ -46,16 +48,64 @@ public class SDPClient {
                 .setCorrelator("234012000023788")
                 .build();
 
-        Integrator integrator = new Integrator.Builder().addUrl(urlConfig).addService(serviceConfig).build();
-        Status status = integrator.chargePhone("2348131631151", 100);
-        logger.info("Status {}", status);
+        ServiceConfig acadaStandardService = new ServiceConfig.Builder()
+                .setSpId("2340110005999")
+                .setSpPassword("ebe4fdda369ef289cf77210f6e0fff9b")
+                .setTimestamp("20170110154245")
+                .setOa("2348138075679")
+                .setFa("2348138075679")
+                .setServiceId("234012000023028")
+                .setProductId("23401220000026651")
+                .build();
+
+        ServiceConfig acadaOnDemandService = new ServiceConfig.Builder()
+                .setSpId("2340110005999")
+                .setSpPassword("ebe4fdda369ef289cf77210f6e0fff9b")
+                .setTimestamp("20170110154245")
+                .setOa("2348138075679")
+                .setFa("2348138075679")
+                .setServiceId("234012000023027")
+                .setProductId("23401220000026650")
+                .build();
+
+        ServiceConfig acadaSmsService = new ServiceConfig.Builder()
+                .setSpId("2340110005999")
+                .setSpPassword("ebe4fdda369ef289cf77210f6e0fff9b")
+                .setTimestamp("20170110154245")
+                .setOa("2348138075679")
+                .setFa("2348138075679")
+                .setServiceId("234012000023327")
+                .setProductId("23401220000026940")
+                .build();
+
+        Integrator jambUssdIntegrator = new Integrator.Builder()
+                .addUrl(urlConfig)
+                .addService(jambUssdService)
+                .build();
+
+        Integrator acadaStandardIntegrator = new Integrator.Builder()
+                .addUrl(urlConfig)
+                .addService(acadaStandardService)
+                .build();
+
+        Integrator acadaOnDemandIntegrator = new Integrator.Builder()
+                .addUrl(urlConfig)
+                .addService(acadaOnDemandService)
+                .build();
+
+        Integrator acadaSmsIntegrator = new Integrator.Builder()
+                .addUrl(urlConfig)
+                .addService(acadaSmsService)
+                .build();
+
+        Status status = acadaOnDemandIntegrator.chargePhone("2348131631151", 100);
+        logger.info("{}", status);
 
 //        Integrator integrator = new Integrator.Builder().addUrl(urlConfig).addService(serviceConfig).build();
 //
 //        sendAuthorizationRequest(urlConfig,serviceConfig,
 //                "2348131631151",transactionId,
 //                17,5000,"NGN","Jamb Digital Service", 1);
-
 
     }
 
