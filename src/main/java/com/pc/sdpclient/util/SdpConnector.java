@@ -18,9 +18,7 @@ public class SdpConnector {
                 .url(url)
                 .post(requestBody).build();
         try (Response response = OkHttpUtil.getHttpClient().newCall(request).execute()) {
-            String resStr = response.toString();
-            logger.info("Res As String: {}", resStr);
-            return new Status<>(true, "Success", resStr);
+            return new Status<>(true, "Success", response.body().string());
         }catch (IOException ioe){
             logger.error("IOException", ioe);
             return new Status<>(false, ioe.getLocalizedMessage());
