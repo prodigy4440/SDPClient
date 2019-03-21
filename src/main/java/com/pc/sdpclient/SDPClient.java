@@ -28,9 +28,10 @@ public class SDPClient {
     public static void main(String[] args) {
 
         String transactionId = TransactionUtil.generateTransactionId(MtnUrl.IP(),1,1);
-        System.out.println("Transaction Id: "+transactionId);
 
+        logger.info("Transaction ID: {}", transactionId);
         UrlConfig urlConfig = new UrlConfig.Builder().build();
+        logger.info("UrlConfig {}",urlConfig);
 
         ServiceConfig serviceConfig = new ServiceConfig.Builder()
                 .setSpId("2340110005999").setSpPassword("F0E139532F43210A1DB9077C4B0FD06E")
@@ -345,9 +346,11 @@ public class SDPClient {
                 .replaceAll("service_description",description)
                 .replaceAll("auth_frequency", String.valueOf(frequency));
 
+        logger.info("Request Xml {}", xmlRequest);
+
         Status<String> postStatus = SdpConnector.post(urlConfig.getAuthorization(), xmlRequest);
 
-        System.out.println(xmlRequest);
+        logger.info("Response Xml {}", postStatus.getData());
         if(postStatus.getStatus()){
             String xmlResponse = postStatus.getData();
             System.out.println(xmlResponse);
