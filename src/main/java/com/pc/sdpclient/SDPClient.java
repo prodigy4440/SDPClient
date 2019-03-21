@@ -345,15 +345,9 @@ public class SDPClient {
                 .replaceAll("country_currency",currency)
                 .replaceAll("service_description",description)
                 .replaceAll("auth_frequency", String.valueOf(frequency));
-
-        logger.info("Request Xml {}", xmlRequest);
-
         Status<String> postStatus = SdpConnector.post(urlConfig.getAuthorization(), xmlRequest);
-
-        logger.info("Response Xml {}", postStatus.getData());
         if(postStatus.getStatus()){
             String xmlResponse = postStatus.getData();
-            System.out.println(xmlResponse);
             return MtnXmlParser.parserMtnAuthorizationRequest(xmlResponse);
         }else{
             return postStatus;
