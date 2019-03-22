@@ -141,7 +141,11 @@ public class Integrator {
 
         if(postStatus.getStatus()){
             String xmlResponse = postStatus.getData();
-            return MtnXmlParser.parseMtnSendSms(xmlResponse);
+            if(xmlResponse.contains("faultstring")){
+                return MtnXmlParser.parseFault(xmlResponse);
+            }else{
+                return MtnXmlParser.parseMtnSendSms(xmlResponse);
+            }
         }else{
             return postStatus;
         }
