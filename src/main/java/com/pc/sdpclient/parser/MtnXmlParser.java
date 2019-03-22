@@ -6,6 +6,7 @@ import com.pc.sdpclient.model.Fault;
 import com.pc.sdpclient.model.Status;
 import com.pc.sdpclient.model.authorization.AuthRequest;
 import com.pc.sdpclient.model.subscription.SubResponse;
+import com.pc.sdpclient.model.subscription.UnsubResponse;
 import com.pc.sdpclient.model.ussd.Abort;
 import com.pc.sdpclient.model.ussd.Ussd;
 import com.pc.sdpclient.util.FileUtil;
@@ -65,6 +66,17 @@ public class MtnXmlParser {
         try {
             SubResponse subResponse = JsonUtil.getJsonMapper().readValue(json, SubResponse.class);
             return new Status(true, "Success", subResponse);
+        } catch (IOException e) {
+            logger.error("IOException",e);
+            return new Status(false, e.getMessage());
+        }
+    }
+
+    public static Status parseMtnUnsubscribeResponse(String xml){
+        String json = JsonUtil.xmlToJson(xml);
+        try {
+            UnsubResponse unsubResponse = JsonUtil.getJsonMapper().readValue(json, UnsubResponse.class);
+            return new Status(true, "Success", unsubResponse);
         } catch (IOException e) {
             logger.error("IOException",e);
             return new Status(false, e.getMessage());
@@ -219,7 +231,7 @@ public class MtnXmlParser {
     public static void main(String args []) throws IOException {
         String xml = FileUtil.loadXmlFile("xml/error.xml");
         String json = JsonUtil.xmlToJson(xml);
-        SubResponse subResponse = JsonUtil.getJsonMapper().readValue(json, SubResponse.class);
+        UnsubResponse subResponse = JsonUtil.getJsonMapper().readValue(json, UnsubResponse.class);
         System.out.println(subResponse);
     }
 }

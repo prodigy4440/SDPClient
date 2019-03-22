@@ -4,6 +4,7 @@ import com.pc.sdpclient.config.ServiceConfig;
 import com.pc.sdpclient.config.UrlConfig;
 import com.pc.sdpclient.model.Status;
 import com.pc.sdpclient.model.subscription.SubResponse;
+import com.pc.sdpclient.model.subscription.UnsubResponse;
 import com.pc.sdpclient.network.SdpConnector;
 import com.pc.sdpclient.parser.MtnXmlParser;
 import com.pc.sdpclient.util.FileUtil;
@@ -66,14 +67,13 @@ public class Integrator {
 
         if(postStatus.getStatus()){
             String xmlResponse = postStatus.getData();
-            System.out.println(xmlResponse);
             if(xmlResponse.contains("faultstring")){
                 return MtnXmlParser.parseFault(xmlResponse);
             }else{
                 Status subStatus = MtnXmlParser.parseMtnSubscribeResponse(xmlResponse);
                 if(subStatus.getStatus()){
                     SubResponse subResponse = (SubResponse) subStatus.getData();
-                    if(subResponse.getCode().equals("22007233")){
+                    if(subResponse.getCode() == 22007233){
                         return subStatus;
                     }else{
                         return new Status(false, subResponse.getDescription());
@@ -94,19 +94,28 @@ public class Integrator {
                 .replaceAll("time_stamp", getServiceConfig().getTimestamp())
                 .replaceAll("product_id", getServiceConfig().getProductId())
                 .replaceAll("end_user_phone_number", phoneNumber);
-        MediaType mediaType = MediaType.parse("application/xml");
-        RequestBody requestBody = RequestBody.create(mediaType, xmlRequest);
 
-        Request request = new Request.Builder()
-                .url(MtnUrl.SUBSCRIBE())
-                .post(requestBody).build();
+        Status<String> postStatus = SdpConnector.post(getUrlConfig().getSubscribe(), xmlRequest);
 
-        try {
-            Response response = OkHttpUtil.getHttpClient().newCall(request).execute();
-            String xmlResponse = response.body().string();
-            return MtnXmlParser.parseMtnResponse(xmlResponse, "ns1:unSubscribeProductResponse", "ns1:unSubscribeProductRsp");
-        } catch (IOException e) {
-            return new Status(false, e.getMessage());
+        if(postStatus.getStatus()){
+            String xmlResponse = postStatus.getData();
+            if(xmlResponse.contains("faultstring")){
+                return MtnXmlParser.parseFault(xmlResponse);
+            }else{
+                Status status = MtnXmlParser.parseMtnUnsubscribeResponse(xmlResponse);
+                if(status.getStatus()){
+                    UnsubResponse unsubResponse = (UnsubResponse)status.getData();
+                    if(unsubResponse.getCode() == 0){
+                        return status;
+                    }else{
+                        return new Status(false, unsubResponse.getDescription());
+                    }
+                }else{
+                    return status;
+                }
+            }
+        }else{
+            return postStatus;
         }
     }
 

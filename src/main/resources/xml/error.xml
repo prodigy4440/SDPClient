@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <soapenv:Body>
-        <ns1:subscribeProductResponse xmlns:ns1="http://www.csapi.org/schema/parlayx/subscribe/manage/v1_0/local">
-            <ns1:subscribeProductRsp>
-                <result>22007233</result>
-                <resultDescription>Temporary Order saved successfully! DataSendStep finish end.</resultDescription>
-            </ns1:subscribeProductRsp>
-        </ns1:subscribeProductResponse>
+        <ns1:unSubscribeProductResponse
+                xmlns:ns1="http://www.csapi.org/schema/parlayx/subscribe/manage/v1_0/local">
+            <ns1:unSubscribeProductRsp>
+                <result>0</result>
+                <resultDescription>successful</resultDescription>
+            </ns1:unSubscribeProductRsp>
+        </ns1:unSubscribeProductResponse>
     </soapenv:Body>
 </soapenv:Envelope>
