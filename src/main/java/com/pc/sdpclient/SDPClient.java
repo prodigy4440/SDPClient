@@ -76,6 +76,7 @@ public class SDPClient {
                 .setServiceId("234012000023327")
                 .setProductId("23401220000026940")
                 .setEndpoint("http://154.113.0.202:8999/acada/api/v1.0/integration/mtn/notify/sms")
+                .setCorrelator("744550456547")
                 .build();
 
         Integrator jambUssdIntegrator = new Integrator.Builder()
