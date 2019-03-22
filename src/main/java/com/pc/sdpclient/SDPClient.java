@@ -101,7 +101,7 @@ public class SDPClient {
 
         String phoneNumber = "2348131631151";
 
-        Status status = acadaSmsIntegrator.sendSms("162", phoneNumber, "Sample message");
+        Status status = acadaSmsIntegrator.sendSms("162", phoneNumber, "X DevAPI relies on server based document ID generation, added in MySQL version 8.0.11, which results in sequentially increasing document IDs across all clients. InnoDB uses the document ID as a primary key, therefore these sequential primary keys for all clients result in efficient page splits and tree reorganizations.");
 //        Status status = acadaStandardIntegrator.unsubscribePhone(phoneNumber);
 //        Status status = acadaOnDemandIntegrator.unsubscribePhone(phoneNumber);
 //        Status status = acadaOnDemandIntegrator.chargePhone("2348131631151", 100);
