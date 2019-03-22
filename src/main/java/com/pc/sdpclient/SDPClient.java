@@ -44,6 +44,7 @@ public class SDPClient {
                 .setProductId("23401220000027529")
                 .setUssdServiceActivationNumber("*55019")
                 .setCorrelator("234012000023788")
+                .setEndpoint("http://154.113.0.202:8087/api/v1.0/ussd/notify")
                 .build();
 
         ServiceConfig acadaStandardService = new ServiceConfig.Builder()
@@ -98,8 +99,8 @@ public class SDPClient {
 
         String phoneNumber = "2348131631151";
 
-        Status status = acadaStandardIntegrator.subscribePhone(phoneNumber);
-//        Status status = acadaOnDemandIntegrator.subscribePhone(phoneNumber);
+//        Status status = acadaStandardIntegrator.subscribePhone(phoneNumber);
+        Status status = acadaOnDemandIntegrator.subscribePhone(phoneNumber);
 //        Status status = acadaOnDemandIntegrator.chargePhone("2348131631151", 100);
 
 

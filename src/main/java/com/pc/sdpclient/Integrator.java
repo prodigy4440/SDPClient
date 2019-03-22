@@ -76,6 +76,30 @@ public class Integrator {
         }
     }
 
+
+    public Status unsubscribePhone(String phoneNumber) {
+        String xmlRequest = FileUtil.loadXmlFile("xml/mtn-unsubscribe.xml")
+                .replaceAll("sp_id", getServiceConfig().getSpId())
+                .replaceAll("sp_password", getServiceConfig().getSpPassword())
+                .replaceAll("time_stamp", getServiceConfig().getTimestamp())
+                .replaceAll("product_id", getServiceConfig().getProductId())
+                .replaceAll("end_user_phone_number", phoneNumber);
+        MediaType mediaType = MediaType.parse("application/xml");
+        RequestBody requestBody = RequestBody.create(mediaType, xmlRequest);
+
+        Request request = new Request.Builder()
+                .url(MtnUrl.SUBSCRIBE())
+                .post(requestBody).build();
+
+        try {
+            Response response = OkHttpUtil.getHttpClient().newCall(request).execute();
+            String xmlResponse = response.body().string();
+            return MtnXmlParser.parseMtnResponse(xmlResponse, "ns1:unSubscribeProductResponse", "ns1:unSubscribeProductRsp");
+        } catch (IOException e) {
+            return new Status(false, e.getMessage());
+        }
+    }
+
     private UrlConfig getUrlConfig(){
         return this.urlConfig;
     }
