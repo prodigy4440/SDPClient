@@ -101,7 +101,7 @@ public class SDPClient {
 
         String phoneNumber = "2348131631151";
 
-        Status status = acadaSmsIntegrator.sendSms("162", phoneNumber, "X DevAPI relies on server based document ID generation, added in MySQL version 8.0.11, which results in sequentially increasing document IDs across all clients. InnoDB uses the document ID as a primary key, therefore these sequential primary keys for all clients result in efficient page splits and tree reorganizations.");
+        Status status = acadaSmsIntegrator.sendSms("162", phoneNumber, "If you are using manual document IDs, you must ensure that IDs from the server's automatically generated document ID sequence are never used. X Plugin is not aware of the data inserted into the collection, including any IDs you use. Thus in future inserts, if the document ID which you assigned manually when inserting a document uses an ID which the server was going to use, the insert operation fails with an error due to primary key duplication.\n" + "\n");
 //        Status status = acadaStandardIntegrator.unsubscribePhone(phoneNumber);
 //        Status status = acadaOnDemandIntegrator.unsubscribePhone(phoneNumber);
 //        Status status = acadaOnDemandIntegrator.chargePhone("2348131631151", 100);

@@ -228,4 +228,9 @@ public class MtnXmlParser {
         }
     }
 
+    public static void main(String args []){
+        String str = "If you are using manual document IDs, you must ensure that IDs from the server's automatically generated document ID sequence are never used. X Plugin is not aware of the data inserted into the collection, including any IDs you use. Thus in future inserts, if the document ID which you assigned manually when inserting a document uses an ID which the server was going to use, the insert operation fails with an error due to primary key duplication.\n" + "\n";
+        System.out.println(str.length());
+    }
+
 }
