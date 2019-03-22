@@ -99,7 +99,8 @@ public class SDPClient {
 
         String phoneNumber = "2348131631151";
 
-        Status status = acadaStandardIntegrator.unsubscribePhone(phoneNumber);
+        Status status = acadaSmsIntegrator.sendSms("162", phoneNumber, "Sample message");
+//        Status status = acadaStandardIntegrator.unsubscribePhone(phoneNumber);
 //        Status status = acadaOnDemandIntegrator.unsubscribePhone(phoneNumber);
 //        Status status = acadaOnDemandIntegrator.chargePhone("2348131631151", 100);
 

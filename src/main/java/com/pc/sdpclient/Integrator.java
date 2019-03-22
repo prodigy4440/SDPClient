@@ -119,6 +119,34 @@ public class Integrator {
         }
     }
 
+    public Status sendSms(String sender, String phoneNumber, String message){
+
+        String xmlRequest = FileUtil.loadXmlFile("xml/mtn-send-sms.xml")
+                .replaceAll("sp_id", getServiceConfig().getSpId())
+                .replaceAll("sp_password",getServiceConfig().getSpPassword())
+                .replaceAll("bundle_id",getServiceConfig().getBundleId())
+                .replaceAll("service_id",getServiceConfig().getServiceId())
+                .replaceAll("time_stamp",getServiceConfig().getTimestamp())
+                .replaceAll("o_a",getServiceConfig().getOa())
+                .replaceAll("fake_a",getServiceConfig().getFa())
+                .replaceAll("link_id",getServiceConfig().getLinkid())
+                .replaceAll("present_id", getServiceConfig().getPresentId())
+                .replaceAll("end_user_phonenumber", phoneNumber)
+                .replaceAll("sender_name", sender)
+                .replaceAll("sms_message", message)
+                .replaceAll("notify_url",getServiceConfig().getEndpoint())
+                .replaceAll("correlator_ref", getServiceConfig().getCorrelator());
+
+        Status<String> postStatus = SdpConnector.post(getUrlConfig().getSubscribe(), xmlRequest);
+
+        if(postStatus.getStatus()){
+            String xmlResponse = postStatus.getData();
+            return MtnXmlParser.parseMtnSendSms(xmlResponse);
+        }else{
+            return postStatus;
+        }
+    }
+
     private UrlConfig getUrlConfig(){
         return this.urlConfig;
     }

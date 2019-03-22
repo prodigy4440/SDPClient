@@ -228,10 +228,4 @@ public class MtnXmlParser {
         }
     }
 
-    public static void main(String args []) throws IOException {
-        String xml = FileUtil.loadXmlFile("xml/error.xml");
-        String json = JsonUtil.xmlToJson(xml);
-        UnsubResponse subResponse = JsonUtil.getJsonMapper().readValue(json, UnsubResponse.class);
-        System.out.println(subResponse);
-    }
 }
