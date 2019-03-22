@@ -137,7 +137,7 @@ public class Integrator {
                 .replaceAll("notify_url",getServiceConfig().getEndpoint())
                 .replaceAll("correlator_ref", getServiceConfig().getCorrelator());
 
-        Status<String> postStatus = SdpConnector.post(getUrlConfig().getSubscribe(), xmlRequest);
+        Status<String> postStatus = SdpConnector.post(getUrlConfig().getSendSms(), xmlRequest);
 
         if(postStatus.getStatus()){
             String xmlResponse = postStatus.getData();
