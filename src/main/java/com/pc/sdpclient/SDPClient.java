@@ -75,7 +75,7 @@ public class SDPClient {
                 .setFa("2348138075679")
                 .setServiceId("234012000023327")
                 .setProductId("23401220000026940")
-                .setEndpoint("")
+                .setEndpoint("dummy_callback")
                 .build();
 
         Integrator jambUssdIntegrator = new Integrator.Builder()
