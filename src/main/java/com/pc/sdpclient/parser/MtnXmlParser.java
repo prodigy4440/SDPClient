@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.pc.sdpclient.model.Fault;
 import com.pc.sdpclient.model.Status;
 import com.pc.sdpclient.model.authorization.AuthRequest;
+import com.pc.sdpclient.model.subscription.SubResponse;
 import com.pc.sdpclient.model.ussd.Abort;
 import com.pc.sdpclient.model.ussd.Ussd;
 import com.pc.sdpclient.util.FileUtil;
@@ -57,6 +58,17 @@ public class MtnXmlParser {
 
     public static Status parseSubscribe(String xml) {
         return parseMtnResponse(xml, "ns1:subscribeProductResponse", "ns1:subscribeProductRsp");
+    }
+
+    public static Status parseMtnSubscribeResponse(String xml){
+        String json = JsonUtil.xmlToJson(xml);
+        try {
+            SubResponse subResponse = JsonUtil.getJsonMapper().readValue(json, SubResponse.class);
+            return new Status(true, "Success", subResponse);
+        } catch (IOException e) {
+            logger.error("IOException",e);
+            return new Status(false, e.getMessage());
+        }
     }
 
     public static Status parseUnsubscribe(String xml) {
@@ -202,5 +214,12 @@ public class MtnXmlParser {
             logger.error("IOException", e);
             return new Status<>(false, e.getLocalizedMessage());
         }
+    }
+
+    public static void main(String args []) throws IOException {
+        String xml = FileUtil.loadXmlFile("xml/error.xml");
+        String json = JsonUtil.xmlToJson(xml);
+        SubResponse subResponse = JsonUtil.getJsonMapper().readValue(json, SubResponse.class);
+        System.out.println(subResponse);
     }
 }

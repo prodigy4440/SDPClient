@@ -51,7 +51,6 @@ public class Integrator {
         }
     }
 
-
     public Status subscribePhone(String phoneNumber) {
         String xmlRequest = FileUtil.loadXmlFile("xml/mtn-subscribe.xml")
                 .replaceAll("sp_id", getServiceConfig().getSpId())
@@ -65,12 +64,12 @@ public class Integrator {
 
 
         if(postStatus.getStatus()){
-            String resp = postStatus.getData();
-            System.out.println(resp);
-            if(resp.contains("faultstring")){
-                return MtnXmlParser.parseFault(resp);
+            String xmlResponse = postStatus.getData();
+            System.out.println(xmlResponse);
+            if(xmlResponse.contains("faultstring")){
+                return MtnXmlParser.parseFault(xmlResponse);
             }else{
-                return null;
+                return MtnXmlParser.parseMtnSubscribeResponse(xmlResponse);
             }
         }else{
             return postStatus;

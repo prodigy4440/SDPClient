@@ -36,8 +36,6 @@ public class SDPClient {
         UrlConfig urlConfig = new UrlConfig.Builder()
                 .build();
 
-        logger.info("{}",urlConfig);
-
         ServiceConfig jambUssdService = new ServiceConfig.Builder()
                 .setSpId("2340110005999")
                 .setSpPassword("F0E139532F43210A1DB9077C4B0FD06E")
@@ -100,8 +98,10 @@ public class SDPClient {
 
         String phoneNumber = "2348131631151";
 
-        Status status = acadaOnDemandIntegrator.subscribePhone(phoneNumber);
+        Status status = acadaStandardIntegrator.subscribePhone(phoneNumber);
+//        Status status = acadaOnDemandIntegrator.subscribePhone(phoneNumber);
 //        Status status = acadaOnDemandIntegrator.chargePhone("2348131631151", 100);
+
 
         logger.info("{}", status);
 
