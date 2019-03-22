@@ -3,6 +3,7 @@ package com.pc.sdpclient;
 import com.pc.sdpclient.config.ServiceConfig;
 import com.pc.sdpclient.config.UrlConfig;
 import com.pc.sdpclient.model.Status;
+import com.pc.sdpclient.model.subscription.SubResponse;
 import com.pc.sdpclient.network.SdpConnector;
 import com.pc.sdpclient.parser.MtnXmlParser;
 import com.pc.sdpclient.util.FileUtil;
@@ -69,6 +70,15 @@ public class Integrator {
             if(xmlResponse.contains("faultstring")){
                 return MtnXmlParser.parseFault(xmlResponse);
             }else{
+                Status subStatus = MtnXmlParser.parseMtnSubscribeResponse(xmlResponse);
+                if(subStatus.getStatus()){
+                    SubResponse subResponse = (SubResponse) subStatus.getData();
+                    if(subResponse.getCode().equals("22007233")){
+                        return subStatus;
+                    }else{
+                        return new Status(false, subResponse.getDescription());
+                    }
+                }
                 return MtnXmlParser.parseMtnSubscribeResponse(xmlResponse);
             }
         }else{
