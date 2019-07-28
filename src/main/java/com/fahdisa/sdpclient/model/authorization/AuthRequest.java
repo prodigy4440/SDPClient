@@ -1,4 +1,4 @@
-package com.pc.sdpclient.model.authorization;
+package com.fahdisa.sdpclient.model.authorization;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

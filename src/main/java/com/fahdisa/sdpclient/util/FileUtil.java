@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.pc.sdpclient.util;
+package com.fahdisa.sdpclient.util;
 
 import org.json.JSONObject;
 import org.json.XML;

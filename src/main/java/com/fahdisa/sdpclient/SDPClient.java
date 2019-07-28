@@ -3,14 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.pc.sdpclient;
+package com.fahdisa.sdpclient;
 
-import com.pc.sdpclient.config.ServiceConfig;
-import com.pc.sdpclient.config.UrlConfig;
-import com.pc.sdpclient.model.Status;
-import com.pc.sdpclient.network.SdpConnector;
-import com.pc.sdpclient.parser.MtnXmlParser;
-import com.pc.sdpclient.util.*;
+import com.fahdisa.sdpclient.config.ServiceConfig;
+import com.fahdisa.sdpclient.config.UrlConfig;
+import com.fahdisa.sdpclient.model.Status;
+import com.fahdisa.sdpclient.network.SdpConnector;
+import com.fahdisa.sdpclient.parser.MtnXmlParser;
+import com.fahdisa.sdpclient.util.FileUtil;
+import com.fahdisa.sdpclient.util.MtnUrl;
+import com.fahdisa.sdpclient.util.OkHttpUtil;
 
 import java.io.IOException;
 
@@ -76,8 +78,23 @@ public class SDPClient {
                 .setServiceId("234012000023327")
                 .setProductId("23401220000026940")
                 .setEndpoint("http://154.113.0.202:8999/acada/api/v1.0/integration/mtn/notify/sms")
+                .setSmsServiceActivationNumber("162")
                 .setCorrelator("744550456547")
                 .build();
+
+
+        ServiceConfig dailyDevotionalServiceConfig = new ServiceConfig.Builder()
+                .setSpId("2340110005999")
+                .setSpPassword("ebe4fdda369ef289cf77210f6e0fff9b")
+                .setTimestamp("20170110154245")
+                .setOa("2348138075679")
+                .setFa("2348138075679")
+                .setServiceId("234012000023873")
+                .setProductId("23401220000027676")
+                .setEndpoint("http://154.113.0.202:8999/acada/api/v1.0/integration/mtn/notify/sms")
+                .setCorrelator("744550456547")
+                .build();
+
 
         Integrator jambUssdIntegrator = new Integrator.Builder()
                 .addUrl(urlConfig)
@@ -101,12 +118,19 @@ public class SDPClient {
 
         String phoneNumber = "2348131631151";
 
+        Integrator devotionalIntegrator = new Integrator.Builder()
+                .addUrl(urlConfig)
+                .addService(dailyDevotionalServiceConfig)
+                .build();
+
 //        Status status = acadaSmsIntegrator.sendSms("162", phoneNumber, "If you are using manual document IDs, you must ensure that IDs from the server's automatically generated document ID sequence are never used. X Plugin is not aware of the data inserted into the collection, including any IDs you use. Thus in future inserts, if the document ID which you assigned manually when inserting a document uses an ID which the server was going to use, the insert operation fails with an error due to primary key duplication.\n" + "\n");
 //        Status status = acadaStandardIntegrator.unsubscribePhone(phoneNumber);
 //        Status status = acadaOnDemandIntegrator.unsubscribePhone(phoneNumber);
 //        Status status = acadaOnDemandIntegrator.chargePhone("2348131631151", 100);
-        Status status = jambUssdIntegrator.chargePhone("2348062318399", 5000);
+//        Status status = jambUssdIntegrator.chargePhone("2348062318399", 5000);
 
+        Status status = devotionalIntegrator.sendSms("2646","08131631151","Sample Devotional message");
+//        Status status = devotionalIntegrator.sendSms("55020","2348131631151","Sample Devotional message");
 
         logger.info("{}", status);
 
@@ -427,6 +451,5 @@ public class SDPClient {
             return postStatus;
         }
     }
-
 
 }

@@ -1,21 +1,13 @@
-package com.pc.sdpclient;
+package com.fahdisa.sdpclient;
 
-import com.pc.sdpclient.config.ServiceConfig;
-import com.pc.sdpclient.config.UrlConfig;
-import com.pc.sdpclient.model.Status;
-import com.pc.sdpclient.model.subscription.SubResponse;
-import com.pc.sdpclient.model.subscription.UnsubResponse;
-import com.pc.sdpclient.network.SdpConnector;
-import com.pc.sdpclient.parser.MtnXmlParser;
-import com.pc.sdpclient.util.FileUtil;
-import com.pc.sdpclient.util.MtnUrl;
-import com.pc.sdpclient.util.OkHttpUtil;
-import okhttp3.MediaType;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-
-import java.io.IOException;
+import com.fahdisa.sdpclient.config.ServiceConfig;
+import com.fahdisa.sdpclient.config.UrlConfig;
+import com.fahdisa.sdpclient.model.Status;
+import com.fahdisa.sdpclient.model.subscription.SubResponse;
+import com.fahdisa.sdpclient.model.subscription.UnsubResponse;
+import com.fahdisa.sdpclient.network.SdpConnector;
+import com.fahdisa.sdpclient.parser.MtnXmlParser;
+import com.fahdisa.sdpclient.util.FileUtil;
 
 public class Integrator {
 
@@ -27,7 +19,6 @@ public class Integrator {
         this.urlConfig = urlConfig;
         this.serviceConfig = serviceConfig;
     }
-
 
     public Status chargePhone(String phoneNumber, Integer amount) {
         String xmlRequest = FileUtil.loadXmlFile("xml/mtn-charge.xml")
@@ -85,7 +76,6 @@ public class Integrator {
             return postStatus;
         }
     }
-
 
     public Status unsubscribePhone(String phoneNumber) {
         String xmlRequest = FileUtil.loadXmlFile("xml/mtn-unsubscribe.xml")
@@ -151,11 +141,11 @@ public class Integrator {
         }
     }
 
-    private UrlConfig getUrlConfig(){
+    public UrlConfig getUrlConfig(){
         return this.urlConfig;
     }
 
-    private ServiceConfig getServiceConfig(){
+    public ServiceConfig getServiceConfig(){
         return this.serviceConfig;
     }
 

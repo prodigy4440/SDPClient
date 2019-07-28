@@ -1,7 +1,6 @@
-package com.pc.sdpclient.network;
+package com.fahdisa.sdpclient.network;
 
-import com.pc.sdpclient.model.Status;
-import com.pc.sdpclient.util.OkHttpUtil;
+import com.fahdisa.sdpclient.model.Status;
 import okhttp3.*;
 import okhttp3.logging.HttpLoggingInterceptor;
 import org.slf4j.Logger;

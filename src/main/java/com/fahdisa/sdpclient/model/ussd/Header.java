@@ -1,8 +1,7 @@
-package com.pc.sdpclient.model.ussd;
+package com.fahdisa.sdpclient.model.ussd;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 public class Header {

@@ -1,16 +1,16 @@
-package com.pc.sdpclient.parser;
+package com.fahdisa.sdpclient.parser;
 
+import com.fahdisa.sdpclient.model.authorization.AuthRequest;
+import com.fahdisa.sdpclient.model.subscription.SubResponse;
+import com.fahdisa.sdpclient.model.subscription.UnsubResponse;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.pc.sdpclient.model.Fault;
-import com.pc.sdpclient.model.Status;
-import com.pc.sdpclient.model.authorization.AuthRequest;
-import com.pc.sdpclient.model.subscription.SubResponse;
-import com.pc.sdpclient.model.subscription.UnsubResponse;
-import com.pc.sdpclient.model.ussd.Abort;
-import com.pc.sdpclient.model.ussd.Ussd;
-import com.pc.sdpclient.util.FileUtil;
-import com.pc.sdpclient.util.JsonUtil;
+import com.fahdisa.sdpclient.model.Fault;
+import com.fahdisa.sdpclient.model.Status;
+import com.fahdisa.sdpclient.model.ussd.Abort;
+import com.fahdisa.sdpclient.model.ussd.Ussd;
+import com.fahdisa.sdpclient.util.FileUtil;
+import com.fahdisa.sdpclient.util.JsonUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;

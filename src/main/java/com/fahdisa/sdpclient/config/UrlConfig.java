@@ -1,4 +1,4 @@
-package com.pc.sdpclient.config;
+package com.fahdisa.sdpclient.config;
 
 import okhttp3.HttpUrl;
 

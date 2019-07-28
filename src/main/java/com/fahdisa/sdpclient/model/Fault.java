@@ -1,4 +1,4 @@
-package com.pc.sdpclient.model;
+package com.fahdisa.sdpclient.model;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;

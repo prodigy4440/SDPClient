@@ -1,6 +1,4 @@
-package com.pc.sdpclient.config;
-
-import java.util.Objects;
+package com.fahdisa.sdpclient.config;
 
 public class ServiceConfig {
 
@@ -319,11 +317,11 @@ public class ServiceConfig {
         }
 
         public ServiceConfig build() {
-            return new ServiceConfig(spId, spPassword, timestamp, serviceId, productId,
-                    reference, smsServiceActivationNumber, ussdServiceActivationNumber,
-                    criteria, endpoint, interfaceName, correlator, linkid, traceUniqueID,
-                    oauthToken, userID, operCode, isAutoExtend, channelID, oa, fa, bundleId,
-                    presentId);
+            return new ServiceConfig(this.spId, this.spPassword, this.timestamp, this.serviceId, this.productId,
+                    this.reference, this.smsServiceActivationNumber, this.ussdServiceActivationNumber,
+                    this.criteria, this.endpoint, this.interfaceName, this.correlator, this.linkid, this.traceUniqueID,
+                    this.oauthToken, this.userID, this.operCode, this.isAutoExtend, this.channelID, this.oa, this.fa, this.bundleId,
+                    this.presentId);
         }
     }
 

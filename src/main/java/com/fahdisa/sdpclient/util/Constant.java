@@ -1,4 +1,4 @@
-package com.pc.sdpclient.util;
+package com.fahdisa.sdpclient.util;
 
 public class Constant {
 

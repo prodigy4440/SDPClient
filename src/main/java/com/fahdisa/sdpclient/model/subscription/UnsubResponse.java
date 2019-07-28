@@ -1,4 +1,4 @@
-package com.pc.sdpclient.model.subscription;
+package com.fahdisa.sdpclient.model.subscription;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

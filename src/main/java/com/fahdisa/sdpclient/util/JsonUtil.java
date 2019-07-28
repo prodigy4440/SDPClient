@@ -1,4 +1,4 @@
-package com.pc.sdpclient.util;
+package com.fahdisa.sdpclient.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
