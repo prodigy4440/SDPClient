@@ -1,4 +1,4 @@
-# SDPClient
+# sdp-client
 
 Java utility for connecting to MTN HSDP platform
 
