@@ -13,4 +13,7 @@ public class EncryptionUtil {
         return new String(Base64.encodeBase64(input.getBytes()));
     }
 
+    public static String md5(String input){
+        return DigestUtils.md5Hex(input);
+    }
 }
