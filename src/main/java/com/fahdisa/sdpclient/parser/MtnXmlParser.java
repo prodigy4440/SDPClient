@@ -3,6 +3,7 @@ package com.fahdisa.sdpclient.parser;
 import com.fahdisa.sdpclient.model.authorization.AuthRequest;
 import com.fahdisa.sdpclient.model.subscription.SubResponse;
 import com.fahdisa.sdpclient.model.subscription.UnsubResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fahdisa.sdpclient.model.Fault;
@@ -204,11 +205,32 @@ public class MtnXmlParser {
         String json = JsonUtil.xmlToJson(xml);
         try {
             AuthRequest authRequest = JsonUtil.getJsonMapper().readValue(json, AuthRequest.class);
-            System.out.println(authRequest);
             return new Status(true, "Success", authRequest);
         } catch (IOException e) {
             e.printStackTrace();
             return new Status<>(false, e.getMessage());
+        }
+    }
+
+    public static Status parseStartSmsResponse(String xml){
+        JsonNode jsonNode = null;
+        try {
+            jsonNode = JsonUtil.getJsonMapper().readValue(JsonUtil.xmlToJson(xml), JsonNode.class);
+            jsonNode.get("Body").get("startSmsNotificationResponse");
+            return new Status(true, "Success", xml);
+        } catch (JsonProcessingException e) {
+            return parseFault(xml);
+        }
+    }
+
+    public static Status parseStopSmsResponse(String xml){
+        JsonNode jsonNode = null;
+        try {
+            jsonNode = JsonUtil.getJsonMapper().readValue(JsonUtil.xmlToJson(xml), JsonNode.class);
+            jsonNode.get("Body").get("stopSmsNotificationResponse");
+            return new Status(true, "Success", xml);
+        } catch (JsonProcessingException e) {
+            return parseFault(xml);
         }
     }
 
@@ -226,11 +248,6 @@ public class MtnXmlParser {
             logger.error("IOException", e);
             return new Status<>(false, e.getLocalizedMessage());
         }
-    }
-
-    public static void main(String args []){
-        String str = "If you are using manual document IDs, you must ensure that IDs from the server's automatically generated document ID sequence are never used. X Plugin is not aware of the data inserted into the collection, including any IDs you use. Thus in future inserts, if the document ID which you assigned manually when inserting a document uses an ID which the server was going to use, the insert operation fails with an error due to primary key duplication.\n" + "\n";
-        System.out.println(str.length());
     }
 
 }

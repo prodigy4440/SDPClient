@@ -89,6 +89,17 @@ public class UrlConfig {
                 .build();
     }
 
+    public HttpUrl getStartSms(){
+        return new HttpUrl.Builder()
+                .scheme(getSchema())
+                .host(getHost())
+                .port(getPort())
+                .addPathSegment("SmsNotificationManagerService")
+                .addPathSegment("services")
+                .addPathSegment("SmsNotificationManager")
+                .build();
+    }
+
     public HttpUrl getStartUssd(){
         return new HttpUrl.Builder()
                 .scheme(getSchema())

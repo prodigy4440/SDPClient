@@ -1,0 +1,17 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:v2="http://www.huawei.com.cn/schema/common/v2_1"
+                  xmlns:loc="http://www.csapi.org/schema/parlayx/sms/notification_manager/v2_3/local">
+    <soapenv:Header>
+        <v2:RequestSOAPHeader>
+            <v2:spId>sp_id</v2:spId>
+            <v2:spPassword>sp_password</v2:spPassword>
+            <v2:serviceId>service_id</v2:serviceId>
+            <v2:timeStamp>time_stamp</v2:timeStamp>
+        </v2:RequestSOAPHeader>
+    </soapenv:Header>
+    <soapenv:Body>
+        <loc:stopSmsNotification>
+            <loc:correlator>correlator_ref</loc:correlator>
+        </loc:stopSmsNotification>
+    </soapenv:Body>
+</soapenv:Envelope>

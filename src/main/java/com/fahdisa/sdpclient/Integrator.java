@@ -8,6 +8,10 @@ import com.fahdisa.sdpclient.model.subscription.UnsubResponse;
 import com.fahdisa.sdpclient.network.SdpConnector;
 import com.fahdisa.sdpclient.parser.MtnXmlParser;
 import com.fahdisa.sdpclient.util.FileUtil;
+import com.fahdisa.sdpclient.util.JsonUtil;
+import com.fasterxml.jackson.databind.JsonNode;
+
+import java.io.IOException;
 
 public class Integrator {
 
@@ -141,6 +145,50 @@ public class Integrator {
         }
     }
 
+    public Status startSmsNotification(){
+        String xmlRequest = FileUtil.loadXmlFile("xml/mtn-start-sms-notification.xml")
+                .replaceAll("sp_id", getServiceConfig().getSpId())
+                .replaceAll("sp_password",getServiceConfig().getSpPassword())
+                .replaceAll("service_id",getServiceConfig().getServiceId())
+                .replaceAll("time_stamp",getServiceConfig().getTimestamp())
+                .replaceAll("service_activation_number",getServiceConfig().getSmsServiceActivationNumber())
+                .replaceAll("notify_url",getServiceConfig().getEndpoint())
+                .replaceAll("correlator_ref", getServiceConfig().getCorrelator());
+
+        Status<String> postStatus = SdpConnector.post(getUrlConfig().getStartSms(), xmlRequest);
+        if(postStatus.getStatus()){
+            String xmlResponse = postStatus.getData();
+            if(xmlResponse.contains("faultstring")){
+                return MtnXmlParser.parseFault(xmlResponse);
+            }else{
+                return MtnXmlParser.parseStartSmsResponse(xmlResponse);
+            }
+        }else{
+            return postStatus;
+        }
+    }
+
+    public Status stopSmsNotification(){
+        String xmlRequest = FileUtil.loadXmlFile("xml/mtn-stop-sms-notification.xml")
+                .replaceAll("sp_id", getServiceConfig().getSpId())
+                .replaceAll("sp_password",getServiceConfig().getSpPassword())
+                .replaceAll("service_id",getServiceConfig().getServiceId())
+                .replaceAll("time_stamp",getServiceConfig().getTimestamp())
+                .replaceAll("correlator_ref", getServiceConfig().getCorrelator());
+
+        Status<String> postStatus = SdpConnector.post(getUrlConfig().getStartSms(), xmlRequest);
+        if(postStatus.getStatus()){
+            String xmlResponse = postStatus.getData();
+            if(xmlResponse.contains("faultstring")){
+                return MtnXmlParser.parseFault(xmlResponse);
+            }else{
+                return MtnXmlParser.parseStartSmsResponse(xmlResponse);
+            }
+        }else{
+            return postStatus;
+        }
+    }
+
     public UrlConfig getUrlConfig(){
         return this.urlConfig;
     }
@@ -168,4 +216,5 @@ public class Integrator {
             return new Integrator(this.urlConfig, this.serviceConfig);
         }
     }
+
 }
