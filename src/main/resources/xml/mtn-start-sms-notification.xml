@@ -17,7 +17,7 @@
                 <correlator>correlator_ref</correlator>
             </loc:reference>
             <loc:smsServiceActivationNumber>service_activation_number</loc:smsServiceActivationNumber>
-            <loc:criteria>subscribe</loc:criteria>
+            <loc:criteria></loc:criteria>
         </loc:startSmsNotification>
     </soapenv:Body>
 </soapenv:Envelope>
