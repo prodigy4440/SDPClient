@@ -18,6 +18,7 @@
             <v1:currency>country_currency</v1:currency>
             <v1:frequency>auth_frequency</v1:frequency>
             <v1:description>service_description</v1:description>
+            <v1:notificationURL>notification_url</v1:notificationURL>
         </v1:authorization>
     </soapenv:Body>
 </soapenv:Envelope>

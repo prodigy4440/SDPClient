@@ -9,7 +9,13 @@ import com.fahdisa.sdpclient.network.SdpConnector;
 import com.fahdisa.sdpclient.parser.MtnXmlParser;
 import com.fahdisa.sdpclient.util.FileUtil;
 import com.fahdisa.sdpclient.util.JsonUtil;
+import com.fahdisa.sdpclient.util.MtnUrl;
+import com.fahdisa.sdpclient.util.OkHttpUtil;
 import com.fasterxml.jackson.databind.JsonNode;
+import okhttp3.MediaType;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 import java.io.IOException;
 
@@ -188,6 +194,100 @@ public class Integrator {
             return postStatus;
         }
     }
+
+    public Status sendUssd(Integer msgType, String senderCb,
+                                  String receiverCb, Integer msgOpType, String msisdn, String serviceCode,
+                                  String codeScheme, String ussdString){
+
+        String xmlRequest = FileUtil.loadXmlFile("xml/mtn-send-ussd-request.xml")
+                .replaceAll("sp_id", getServiceConfig().getSpId())
+                .replaceAll("sp_password",getServiceConfig().getSpPassword())
+                .replaceAll("bundle_id",getServiceConfig().getBundleId())
+                .replaceAll("time_stamp",getServiceConfig().getTimestamp())
+                .replaceAll("service_id", getServiceConfig().getTimestamp())
+                .replaceAll("fake_oa",getServiceConfig().getOa())
+                .replaceAll("fake_fa",getServiceConfig().getFa())
+                .replaceAll("msg_type", String.valueOf(msgType))
+                .replaceAll("sender_cb", senderCb)
+                .replaceAll("receive_cb", receiverCb)
+                .replaceAll("ussd_op_type", String.valueOf(msgOpType))
+                .replaceAll("user_phone_number", msisdn)
+                .replaceAll("service_code", serviceCode)
+                .replaceAll("code_scheme", codeScheme)
+                .replaceAll("ussd_string",ussdString);
+
+        Status<String> postStatus = SdpConnector.post(getUrlConfig().getSendUssd(), xmlRequest);
+        if(postStatus.getStatus()){
+            String xmlResponse = postStatus.getData();
+            if(xmlResponse.contains("faultstring")){
+                return MtnXmlParser.parseFault(xmlResponse);
+            }else{
+                return MtnXmlParser.parseMtnSendUssd(xmlResponse);
+            }
+        }else{
+            return postStatus;
+        }
+    }
+
+    public Status sendUssdAbort(String senderCb, String receiverCb, String abortReason){
+        String xmlRequest = FileUtil.loadXmlFile("xml/mtn-send-ussd-abort-request.xml")
+                .replaceAll("sp_id", getServiceConfig().getSpId())
+                .replaceAll("sp_password",getServiceConfig().getSpPassword())
+                .replaceAll("service_id",getServiceConfig().getServiceId())
+                .replaceAll("time_stamp",getServiceConfig().getTimestamp())
+                .replaceAll("fake_oa",getServiceConfig().getOa())
+                .replaceAll("fake_fa",getServiceConfig().getFa())
+                .replaceAll("sender_cb", senderCb)
+                .replaceAll("receive_cb", receiverCb)
+                .replaceAll("abort_reason", abortReason);
+
+        Status<String> postStatus = SdpConnector.post(getUrlConfig().getSendUssd(), xmlRequest);
+        if(postStatus.getStatus()){
+            String xmlResponse = postStatus.getData();
+            if(xmlResponse.contains("faultstring")){
+                return MtnXmlParser.parseFault(xmlResponse);
+            }else{
+                return MtnXmlParser.parseMtnAbortUssd(xmlResponse);
+            }
+        }else{
+            return postStatus;
+        }
+    }
+
+    /**
+     * Request for User consent before charging them for a service
+     *
+     * Scoep: 17: Payment
+     *        99: Subscription
+     *        4: LBS
+     *        79: On-Demand
+     * */
+    public Status sendAuthorizationRequest(String phoneNumber, String transactionId, Integer scope,
+                                                  Integer amount, String currency, String description,
+                                                  Integer frequency){
+        String xmlRequest = FileUtil.loadXmlFile("xml/mtn-authorization-request.xml")
+                .replaceAll("sp_id", getServiceConfig().getSpId())
+                .replaceAll("sp_password",getServiceConfig().getSpPassword())
+                .replaceAll("time_stamp",getServiceConfig().getTimestamp())
+                .replaceAll("end_user_identifier",phoneNumber)
+                .replaceAll("transaction_id",transactionId)
+                .replaceAll("auth_scope",String.valueOf(scope))
+                .replaceAll("service_id",getServiceConfig().getServiceId())
+                .replaceAll("service_amount",String.valueOf(amount))
+                .replaceAll("country_currency",currency)
+                .replaceAll("service_description",description)
+                .replaceAll("notification_url",getServiceConfig().getEndpoint())
+                .replaceAll("auth_frequency", String.valueOf(frequency));
+        Status<String> postStatus = SdpConnector.post(getUrlConfig().getAuthorization(), xmlRequest);
+        if(postStatus.getStatus()){
+            String xmlResponse = postStatus.getData();
+            return MtnXmlParser.parserMtnAuthorizationRequest(xmlResponse);
+        }else{
+            return postStatus;
+        }
+    }
+
+
 
     public UrlConfig getUrlConfig(){
         return this.urlConfig;
