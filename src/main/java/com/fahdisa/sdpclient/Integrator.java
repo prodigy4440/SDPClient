@@ -30,12 +30,13 @@ public class Integrator {
         this.serviceConfig = serviceConfig;
     }
 
-    public Status chargePhone(String phoneNumber, Integer amount) {
+    public Status chargePhone(String phoneNumber, String authorizationToken, Integer amount) {
         String xmlRequest = FileUtil.loadXmlFile("xml/mtn-charge.xml")
                 .replaceAll("sp_id", getServiceConfig().getSpId())
                 .replaceAll("sp_password", getServiceConfig().getSpPassword())
                 .replaceAll("time_stamp", getServiceConfig().getTimestamp())
-                .replaceAll("product_id", getServiceConfig().getProductId())
+//                .replaceAll("product_id", getServiceConfig().getProductId())
+                .replaceAll("authorization_token", authorizationToken)
                 .replaceAll("service_id", getServiceConfig().getServiceId())
                 .replaceAll("charge_amount", String.valueOf(amount))
                 .replaceAll("end_user_phone_number", phoneNumber);
@@ -288,6 +289,32 @@ public class Integrator {
     }
 
 
+    /**
+     *  Query user authorization status
+     *
+     * @param phoneNumber The user's phone number
+     * @param transactionId Unique id to identify transaction
+     * @param accessToken The token code of the authorization request
+     * */
+    public Status sendQueryAuthorizationRequest(String phoneNumber,
+                                                String transactionId,
+                                                String accessToken){
+        String xmlRequest = FileUtil.loadXmlFile("xml/mtn-query-authorization-request.xml")
+                .replaceAll("sp_id", getServiceConfig().getSpId())
+                .replaceAll("sp_password",getServiceConfig().getSpPassword())
+                .replaceAll("time_stamp",getServiceConfig().getTimestamp())
+                .replaceAll("end_user_identifier",phoneNumber)
+                .replaceAll("transaction_id",transactionId)
+                .replaceAll("access_token",accessToken)
+                .replaceAll("service_id",getServiceConfig().getServiceId());
+        Status<String> postStatus = SdpConnector.post(getUrlConfig().getAuthorization(), xmlRequest);
+        if(postStatus.getStatus()){
+            String xmlResponse = postStatus.getData();
+            return MtnXmlParser.parseMtnAuthQueryResponse(xmlResponse);
+        }else{
+            return postStatus;
+        }
+    }
 
     public UrlConfig getUrlConfig(){
         return this.urlConfig;

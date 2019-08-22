@@ -1,6 +1,8 @@
 package com.fahdisa.sdpclient.parser;
 
 import com.fahdisa.sdpclient.model.authorization.AuthRequest;
+import com.fahdisa.sdpclient.model.authorization.AuthResponse;
+import com.fahdisa.sdpclient.model.sms.SmsReceivedModel;
 import com.fahdisa.sdpclient.model.subscription.SubResponse;
 import com.fahdisa.sdpclient.model.subscription.UnsubResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -209,6 +211,16 @@ public class MtnXmlParser {
         } catch (IOException e) {
             e.printStackTrace();
             return new Status<>(false, e.getMessage());
+        }
+    }
+
+    public static Status<AuthResponse> parseMtnAuthQueryResponse(String xml){
+        try {
+            AuthResponse authResponse = JsonUtil.xmlToPojoViaJson(xml, AuthResponse.class);
+            return new Status<>(true, "Success", authResponse);
+        }catch (IOException ioe){
+            ioe.printStackTrace();
+            return new Status<>(false, ioe.getMessage());
         }
     }
 

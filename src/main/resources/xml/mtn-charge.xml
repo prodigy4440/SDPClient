@@ -7,9 +7,9 @@
             <serviceId>service_id</serviceId>
             <timeStamp>time_stamp</timeStamp>
             <OA>end_user_phone_number</OA>
-            <!--<FA>989377123456</FA>-->
-            <!--<oauth_token>authorization_token</oauth_token>-->
-            <productId>product_id</productId>
+            <FA>end_user_phone_number</FA>
+            <oauth_token>authorization_token</oauth_token>
+<!--            <productId>product_id</productId>-->
         </RequestSOAPHeader>
     </soapenv:Header>
     <soapenv:Body>
