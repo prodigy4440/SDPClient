@@ -6,6 +6,7 @@
             <v2:spId>sp_id</v2:spId>
             <v2:spPassword>sp_password</v2:spPassword>
             <v2:timeStamp>time_stamp</v2:timeStamp>
+            <v2:serviceId>service_id</v2:serviceId>
         </v2:RequestSOAPHeader>
     </soapenv:Header>
     <soapenv:Body>
@@ -17,8 +18,36 @@
             <v1:amount>service_amount</v1:amount>
             <v1:currency>country_currency</v1:currency>
             <v1:frequency>auth_frequency</v1:frequency>
+            <v1:contentId/>
             <v1:description>service_description</v1:description>
             <v1:notificationURL>notification_url</v1:notificationURL>
+            <v1:tokenValidity>token_validity</v1:tokenValidity>
+            <v1:extensionInfo>
+                <item>
+                    <key>productName</key>
+                    <value>product_name</value>
+                </item>
+                <item>
+                    <key>totalAmount</key>
+                    <value>total_amount</value>
+                </item>
+                <item>
+                    <key>channel</key>
+                    <value>chan_nel</value>
+                </item>
+                <item>
+                    <key>serviceInterval</key>
+                    <value>service_inter_val</value>
+                </item>
+                <item>
+                    <key>serviceIntervalUnit</key>
+                    <value>service_interval_unit</value>
+                </item>
+                <item>
+                    <key>tokenType</key>
+                    <value>token_type</value>
+                </item>
+            </v1:extensionInfo>
         </v1:authorization>
     </soapenv:Body>
 </soapenv:Envelope>

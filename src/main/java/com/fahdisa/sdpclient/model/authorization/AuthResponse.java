@@ -99,7 +99,7 @@ public class AuthResponse implements Serializable {
         this.code = (String)result.get("resultCode");
         this.description = (String)result.get("resultDescription");
         Map<String, Object> authorizationInfo = (Map<String, Object>) queryAuthorizationResponse.get("authorizationInfo");
-        this.tokenStatus = (String)authorizationInfo.get("accessTokenStatus");
+        this.tokenStatus = (String)authorizationInfo.getOrDefault("accessTokenStatus", "");
         this.accessToken = (String)authorizationInfo.get("accessToken");
         this.tokenValidity = (String)authorizationInfo.get("tokenValidity");
         this.totalAmount = Integer.parseInt((String)authorizationInfo.get("totalAmount"));

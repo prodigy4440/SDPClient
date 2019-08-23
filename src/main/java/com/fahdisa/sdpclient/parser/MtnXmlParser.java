@@ -1,10 +1,13 @@
 package com.fahdisa.sdpclient.parser;
 
+import com.fahdisa.sdpclient.model.authorization.AuthQueryList;
 import com.fahdisa.sdpclient.model.authorization.AuthRequest;
 import com.fahdisa.sdpclient.model.authorization.AuthResponse;
 import com.fahdisa.sdpclient.model.sms.SmsReceivedModel;
 import com.fahdisa.sdpclient.model.subscription.SubResponse;
 import com.fahdisa.sdpclient.model.subscription.UnsubResponse;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -14,12 +17,18 @@ import com.fahdisa.sdpclient.model.ussd.Abort;
 import com.fahdisa.sdpclient.model.ussd.Ussd;
 import com.fahdisa.sdpclient.util.FileUtil;
 import com.fahdisa.sdpclient.util.JsonUtil;
+import com.fasterxml.jackson.databind.Module;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.XML;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Objects;
 
 public class MtnXmlParser {
@@ -224,6 +233,16 @@ public class MtnXmlParser {
         }
     }
 
+    public static Status<AuthQueryList> parseMtnAuthQueryListResponse(String xml){
+        try {
+            AuthQueryList authQueryList = JsonUtil.xmlToPojoViaJson(xml, AuthQueryList.class);
+            return new Status<>(true, "Success", authQueryList);
+        }catch (IOException ioe){
+            ioe.printStackTrace();
+            return new Status<>(false, ioe.getMessage());
+        }
+    }
+
     public static Status parseStartSmsResponse(String xml){
         JsonNode jsonNode = null;
         try {
@@ -260,6 +279,22 @@ public class MtnXmlParser {
             logger.error("IOException", e);
             return new Status<>(false, e.getLocalizedMessage());
         }
+    }
+
+    public static void main(String args []) throws IOException {
+        String xml = FileUtil.loadXmlFile("xml/not-used/query-response.xml");
+
+        AuthQueryList authQueryList = JsonUtil.xmlStraightToPojo(xml, AuthQueryList.class);
+        System.out.println(authQueryList);
+//
+//        SimpleModule module = new SimpleModule().addDeserializer(Object.class,
+//                JsonUtil.Issue205FixedUntypedObjectDeserializer.getInstance());
+//        XmlMapper xmlMapper = (XmlMapper) new XmlMapper().registerModule(module);
+//
+//        AuthQueryList authQueryList = xmlMapper.readValue(xml, AuthQueryList.class);
+//        System.out.println(authQueryList);
+//        new ObjectMapper().readValue(object.toString(), AuthQueryList.class);
+//        System.out.println(object.toString());
     }
 
 }

@@ -16,11 +16,14 @@ import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
 public class Integrator {
 
+    private static Logger integratorLogger = LoggerFactory.getLogger(Integer.class);
     private UrlConfig urlConfig;
 
     private ServiceConfig serviceConfig;
@@ -258,14 +261,17 @@ public class Integrator {
     /**
      * Request for User consent before charging them for a service
      *
-     * Scoep: 17: Payment
+     * Scope: 17: Payment
      *        99: Subscription
      *        4: LBS
      *        79: On-Demand
      * */
     public Status sendAuthorizationRequest(String phoneNumber, String transactionId, Integer scope,
                                                   Integer amount, String currency, String description,
-                                                  Integer frequency){
+                                                  Integer frequency, Integer tokeValidity,
+                                           String productName, String channel,
+                                           Integer serviceInterval, Integer serviceIntervalUnit,
+                                           Integer tokenType){
         String xmlRequest = FileUtil.loadXmlFile("xml/mtn-authorization-request.xml")
                 .replaceAll("sp_id", getServiceConfig().getSpId())
                 .replaceAll("sp_password",getServiceConfig().getSpPassword())
@@ -278,6 +284,13 @@ public class Integrator {
                 .replaceAll("country_currency",currency)
                 .replaceAll("service_description",description)
                 .replaceAll("notification_url",getServiceConfig().getEndpoint())
+                .replaceAll("token_validity", String.valueOf(tokeValidity))
+                .replaceAll("product_name", productName)
+                .replaceAll("total_amount", String.valueOf(amount))
+                .replaceAll("chan_nel", channel)
+                .replaceAll("service_inter_val", String.valueOf(serviceInterval))
+                .replaceAll("service_interval_unit", String.valueOf(serviceIntervalUnit))
+                .replaceAll("token_type", String.valueOf(tokenType))
                 .replaceAll("auth_frequency", String.valueOf(frequency));
         Status<String> postStatus = SdpConnector.post(getUrlConfig().getAuthorization(), xmlRequest);
         if(postStatus.getStatus()){
@@ -316,6 +329,22 @@ public class Integrator {
         }
     }
 
+    public Status sendQueryAuthorizationListRequest(String phoneNumber, Integer operation){
+        String xmlRequest = FileUtil.loadXmlFile("xml/mtn-query-authorization-list-request.xml")
+                .replaceAll("sp_id", getServiceConfig().getSpId())
+                .replaceAll("sp_password",getServiceConfig().getSpPassword())
+                .replaceAll("time_stamp",getServiceConfig().getTimestamp())
+                .replaceAll("end_user_identifier",phoneNumber)
+                .replaceAll("oper_ation",String.valueOf(operation));
+        Status<String> postStatus = SdpConnector.post(getUrlConfig().getAuthorization(), xmlRequest);
+        if(postStatus.getStatus()){
+            String xmlResponse = postStatus.getData();
+            return MtnXmlParser.parseMtnAuthQueryResponse(xmlResponse);
+        }else{
+            return postStatus;
+        }
+    }
+
     public UrlConfig getUrlConfig(){
         return this.urlConfig;
     }
@@ -343,5 +372,6 @@ public class Integrator {
             return new Integrator(this.urlConfig, this.serviceConfig);
         }
     }
+
 
 }

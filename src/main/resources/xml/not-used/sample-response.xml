@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <soapenv:Body>
+        <ns1:authorizationResponse xmlns:ns1="http://www.csapi.org/schema/authorization/local/v1_0">
+            <ns1:result>
+                <resultCode>0</resultCode>
+                <resultDescription>Pending</resultDescription>
+            </ns1:result>
+            <ns1:token>08230836350785341174</ns1:token>
+            <ns1:extensionInfo>
+                <item>
+                    <key>tokenExpiryTime</key>
+                    <value>20190823074135</value>
+                </item>
+            </ns1:extensionInfo>
+        </ns1:authorizationResponse>
+    </soapenv:Body>
+</soapenv:Envelope>

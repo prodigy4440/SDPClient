@@ -123,16 +123,22 @@ public class SDPClient {
                 .addService(dailyDevotionalServiceConfig)
                 .build();
 
+        devotionalIntegrator.sendAuthorizationRequest("2348131631151",
+                "12345", 17, 5000,
+                "NGN","Dsc",0,
+                1,"MegaVault","2",
+                1,5,1);
+
 //        Status status = acadaSmsIntegrator.sendSms("162", phoneNumber, "If you are using manual document IDs, you must ensure that IDs from the server's automatically generated document ID sequence are never used. X Plugin is not aware of the data inserted into the collection, including any IDs you use. Thus in future inserts, if the document ID which you assigned manually when inserting a document uses an ID which the server was going to use, the insert operation fails with an error due to primary key duplication.\n" + "\n");
 //        Status status = acadaStandardIntegrator.unsubscribePhone(phoneNumber);
 //        Status status = acadaOnDemandIntegrator.unsubscribePhone(phoneNumber);
 //        Status status = acadaOnDemandIntegrator.chargePhone("2348131631151", 100);
 //        Status status = jambUssdIntegrator.chargePhone("2348062318399", 5000);
 
-        Status status = devotionalIntegrator.sendSms("2646","08131631151","Sample Devotional message");
+//        Status status = devotionalIntegrator.sendSms("2646","08131631151","Sample Devotional message");
 //        Status status = devotionalIntegrator.sendSms("55020","2348131631151","Sample Devotional message");
 
-        logger.info("{}", status);
+//        logger.info("{}", status);
 
 //        Integrator integrator = new Integrator.Builder().addUrl(urlConfig).addService(serviceConfig).build();
 //

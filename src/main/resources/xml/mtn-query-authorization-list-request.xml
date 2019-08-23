@@ -1,0 +1,17 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:v2="http://www.huawei.com.cn/schema/common/v2_1"
+                  xmlns:v1="http://www.csapi.org/schema/authorization/local/v1_0">
+    <soapenv:Header>
+        <v2:RequestSOAPHeader>
+            <v2:spId>sp_id</v2:spId>
+            <v2:spPassword>sp-password</v2:spPassword>
+            <v2:timeStamp>time_stamp</v2:timeStamp>
+        </v2:RequestSOAPHeader>
+    </soapenv:Header>
+    <soapenv:Body>
+        <v1:queryAuthorizationList>
+            <v1:endUserIdentifier>end_user_identifier</v1:endUserIdentifier>
+            <v1:operation>oper_ation</v1:operation>
+        </v1:queryAuthorizationList>
+    </soapenv:Body>
+</soapenv:Envelope>
