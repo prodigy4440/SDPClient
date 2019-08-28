@@ -30,57 +30,57 @@ public class SDPClient {
 
     public static void main(String[] args) {
 //
-//        UrlConfig urlConfig = new UrlConfig.Builder().build();
-//        ServiceConfig nimcService = new ServiceConfig.Builder()
-//                .setSpId("2340110005999")
-//                .setSpPassword("F0E139532F43210A1DB9077C4B0FD06E")
-//                .setTimestamp("20190313095640")
-//                .setServiceId("234012000024089")
-//                .setProductId("23401220000027990")
-//                .setUssdServiceActivationNumber("*346*1#")
-//                .setCorrelator("234012000023788")
-//                .setEndpoint("http://154.113.0.202:8087/api/v1.0/ussd/notify")
-//                .build();
-//
-//        Integrator nimcIntegrator = new Integrator.Builder()
-//                .addUrl(urlConfig)
-//                .addService(nimcService)
-//                .build();
-//
-//
-//        Status status = nimcIntegrator.startUssdNotification();
-//        logger.info("{}", status);
-
-        String transactionId = TransactionUtil.generateTransactionId(MtnUrl.IP(),1,4);
-
-        logger.info("Transaction ID: {}", transactionId);
         UrlConfig urlConfig = new UrlConfig.Builder().build();
-        String spPassword = EncryptionUtil.md5("2340110011483" + "bmeB500" + "20190728084320");
-
-        ServiceConfig megaVaultServiceConfig = new ServiceConfig
-                .Builder()
-                .setSpId("2340110011483")
-                .setSpPassword(spPassword)
-                .setTimestamp("20190728084320")
-                .setOa("2348166721550")
-                .setFa("2348166721550")
-                .setServiceId("234012000024080")
-                .setProductId("23401220000027965")
-                .setEndpoint("http://69.28.95.40:8087/megavault/api/v1.0/sdp/callback")
-                .setCorrelator("8738938838")
-                .setSmsServiceActivationNumber("20902")
+        ServiceConfig nimcService = new ServiceConfig.Builder()
+                .setSpId("2340110005999")
+                .setSpPassword("F0E139532F43210A1DB9077C4B0FD06E")
+                .setTimestamp("20190313095640")
+                .setServiceId("234012000024089")
+                .setProductId("23401220000027990")
+                .setUssdServiceActivationNumber("*346*1#")
+                .setCorrelator("234012000023788")
+                .setEndpoint("http://154.113.0.202:8087/api/v1.0/ussd/notify")
                 .build();
 
-        Integrator megaVaultIntegrator = new Integrator.Builder()
+        Integrator nimcIntegrator = new Integrator.Builder()
                 .addUrl(urlConfig)
-                .addService(megaVaultServiceConfig)
+                .addService(nimcService)
                 .build();
 
 
-        String phoneNumber = "2348131631151";
+        Status status = nimcIntegrator.startUssdNotification();
+        logger.info("{}", status);
 
-        Status status = megaVaultIntegrator.sendSms("20902", phoneNumber, "Sample Message From from SDP Client");
-        logger.info("STATUS: {}", status);
+//        String transactionId = TransactionUtil.generateTransactionId(MtnUrl.IP(),1,4);
+//
+//        logger.info("Transaction ID: {}", transactionId);
+//        UrlConfig urlConfig = new UrlConfig.Builder().build();
+//        String spPassword = EncryptionUtil.md5("2340110011483" + "bmeB500" + "20190728084320");
+//
+//        ServiceConfig megaVaultServiceConfig = new ServiceConfig
+//                .Builder()
+//                .setSpId("2340110011483")
+//                .setSpPassword(spPassword)
+//                .setTimestamp("20190728084320")
+//                .setOa("2348166721550")
+//                .setFa("2348166721550")
+//                .setServiceId("234012000024080")
+//                .setProductId("23401220000027965")
+//                .setEndpoint("http://69.28.95.40:8087/megavault/api/v1.0/sdp/callback")
+//                .setCorrelator("8738938838")
+//                .setSmsServiceActivationNumber("20902")
+//                .build();
+//
+//        Integrator megaVaultIntegrator = new Integrator.Builder()
+//                .addUrl(urlConfig)
+//                .addService(megaVaultServiceConfig)
+//                .build();
+//
+//
+//        String phoneNumber = "2348131631151";
+//
+//        Status status = megaVaultIntegrator.sendSms("20902", phoneNumber, "Sample Message From from SDP Client");
+//        logger.info("STATUS: {}", status);
 //AuthModel{spId='2340110011483', serviceId='234012000024080', traceUniqueId='203035007912019082706090241004', subscriberID='2348131631151', partnerID='2340110011483', capabilityType='17', consentResult='0', accessToken='27060917079100699621', tokenType='1', tokenExpiryTime='20190828050917'}
 
 
@@ -93,8 +93,8 @@ public class SDPClient {
 //                .sendQueryAuthorizationRequest(phoneNumber, "011000004131908241358070001003",
 //                        "08241358080777872280");
 //        logger.info("QUERY STATUS: {}",queryStatus);
-        Status chargeStatus = megaVaultIntegrator.chargePhone("09030007010", "27161009075802604522", 5000);
-        logger.info("CHARGE STATUS: {}", chargeStatus);
+//        Status chargeStatus = megaVaultIntegrator.chargePhone("09030007010", "27161009075802604522", 5000);
+//        logger.info("CHARGE STATUS: {}", chargeStatus);
 
 
 //        ServiceConfig jambUssdService = new ServiceConfig.Builder()
