@@ -13,11 +13,13 @@ public class Fault implements Serializable {
     private String description;
 
     @JsonProperty("Body")
-    public void unpackBody(Map<String, Object> bodyMap){
-        System.out.println(bodyMap);
-        Map<String, Object> faultMap = (Map<String, Object>)bodyMap.get("Fault");
-        this.faultCode = String.valueOf(faultMap.get("faultcode"));
-        this.description = String.valueOf(faultMap.get("faultstring"));
+    public void unpackBody(Map<String, Object> bodyMap) {
+        Map<String, Object> faultMap = (Map<String, Object>) bodyMap.get("Fault");
+        if (Objects.nonNull(faultMap.get("faultcode")))
+            this.faultCode = String.valueOf(faultMap.get("faultcode"));
+
+        if (Objects.nonNull(faultMap.get("faultstring")))
+            this.description = String.valueOf(faultMap.get("faultstring"));
     }
 
     public String getFaultCode() {

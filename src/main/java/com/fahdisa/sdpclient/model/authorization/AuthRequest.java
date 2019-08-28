@@ -8,9 +8,11 @@ import java.util.Objects;
 
 public class AuthRequest implements Serializable {
 
-    private Integer code;
+    private Integer resultCode;
     private String description;
+    
     private String token;
+    private String tokenExpiryTime;
 
     @JsonProperty("Header")
     public void unpackHeader(Map<String, Object> headerMap){
@@ -19,19 +21,39 @@ public class AuthRequest implements Serializable {
     @JsonProperty("Body")
     public void unpackBody(Map<String, Object> bodyMap){
         Map<String, Object> authorizationResponse = (Map<String, Object>) bodyMap.get("authorizationResponse");
-        Map<String, Object> propertyMap = (Map<String, Object>) authorizationResponse.get("result");
+       if(Objects.nonNull(authorizationResponse.get("result"))){
+            Map<String, Object> propertyMap = (Map<String, Object>) authorizationResponse.get("result");
+           if(Objects.nonNull(propertyMap.get("resultCode"))){
+               this.resultCode = Integer.parseInt((String)propertyMap.get("resultCode"));
+           }
+           if(Objects.nonNull(propertyMap.get("resultDescription"))){
+               this.description = String.valueOf(propertyMap.get("resultDescription"));
+           }
+        }
 
-        this.code = Integer.parseInt((String)propertyMap.get("resultCode"));
-        this.description = String.valueOf(propertyMap.get("resultDescription"));
-        this.token = String.valueOf(propertyMap.get("token"));
+        if(Objects.nonNull(authorizationResponse.get("token"))){
+            this.token = String.valueOf(authorizationResponse.get("token"));
+        }
+        if(Objects.nonNull(authorizationResponse.get("extensionInfo"))){
+            Map<String, Object> extensionInfo = (Map<String, Object>)authorizationResponse.get("extensionInfo");
+            if(Objects.nonNull(extensionInfo.get("item"))){
+                if(Objects.nonNull(extensionInfo.get("key"))){
+                    String key  = (String) extensionInfo.get("key");
+                    String value = (String) extensionInfo.get("value");
+                    if(key.equalsIgnoreCase("tokenExpiryTime")){
+                        tokenExpiryTime = value;
+                    }
+                }
+            }
+        }
     }
 
-    public Integer getCode() {
-        return code;
+    public Integer getResultCode() {
+        return resultCode;
     }
 
-    public void setCode(Integer code) {
-        this.code = code;
+    public void setResultCode(Integer resultCode) {
+        this.resultCode = resultCode;
     }
 
     public String getDescription() {
@@ -55,18 +77,18 @@ public class AuthRequest implements Serializable {
         if (this == o) return true;
         if (!(o instanceof AuthRequest)) return false;
         AuthRequest that = (AuthRequest) o;
-        return Objects.equals(getCode(), that.getCode()) && Objects.equals(getDescription(),
+        return Objects.equals(getResultCode(), that.getResultCode()) && Objects.equals(getDescription(),
                 that.getDescription()) && Objects.equals(getToken(), that.getToken());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getCode(), getDescription(), getToken());
+        return Objects.hash(getResultCode(), getDescription(), getToken());
     }
 
     @Override
     public String toString() {
-        return "AuthRequest{" + "code=" + code + ", description='" + description
+        return "AuthRequest{" + "code=" + resultCode + ", description='" + description
                 + '\'' + ", token='" + token + '\'' + '}';
     }
 }

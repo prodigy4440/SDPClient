@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <soapenv:Body>
+        <soapenv:Fault>
+            <faultcode>POL0002</faultcode>
+            <faultstring>Privacy verification failed</faultstring>
+            <detail>
+                <ns1:PolicyException xmlns:ns1="http://www.csapi.org/schema/parlayx/common/v2_1">
+                    <messageId>POL0002</messageId>
+                    <text>Privacy verification failed</text>
+                </ns1:PolicyException>
+            </detail>
+        </soapenv:Fault>
+    </soapenv:Body>
+</soapenv:Envelope>

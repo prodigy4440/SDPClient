@@ -33,6 +33,18 @@ public class Integrator {
         this.serviceConfig = serviceConfig;
     }
 
+    /**
+     * Charge a user from a product created in sdp
+     * @param phoneNumber The phone number to be charged
+     * @param authorizationToken This is the token returned after
+     *                           user authorization has been given
+     * @param amount The product price
+     *
+     * @return Status The status object has three fields, status this is boolean
+     *                indicating if sdp was reached successfully or not, description
+     *                describes what happened while making the call, while data, hold
+     *                what sdp returned
+     * */
     public Status chargePhone(String phoneNumber, String authorizationToken, Integer amount) {
         String xmlRequest = FileUtil.loadXmlFile("xml/mtn-charge.xml")
                 .replaceAll("sp_id", getServiceConfig().getSpId())
@@ -260,6 +272,19 @@ public class Integrator {
 
     /**
      * Request for User consent before charging them for a service
+     * @param phoneNumber The user whose consent is required
+     * @param transactionId Unique transaction id
+     * @param scope The type of payment {17:Payment, 99: Subscription, 4: LBS, 79: ON-Demand}
+     * @param amount The service price to be charged * 100
+     * @param currency The unit of price {NGN: Naira, USD: Dollars}
+     * @param frequency Charging frequency. Positive integer
+     * @param description Reason for Charging e.g Service/Charging/Subscription
+     * @param tokenValidity Request token validity in days Integer e.g 1
+     * @param productName The name of the product
+     * @param channel Generation Token Channel, {0, WAP, 1: WEB, 2: SMS, 3: USSD, 4: IVR,}
+     * @param serviceInterval The frequency of the service, 0, 1, 2 ...
+     * @param serviceIntervalUnit 1: hour 2: day: 3: month 4: week
+     * @param tokenType  0: one-off toke, 1 Token available on token validity
      *
      * Scope: 17: Payment
      *        99: Subscription
@@ -268,7 +293,7 @@ public class Integrator {
      * */
     public Status sendAuthorizationRequest(String phoneNumber, String transactionId, Integer scope,
                                                   Integer amount, String currency, String description,
-                                                  Integer frequency, Integer tokeValidity,
+                                                  Integer frequency, Integer tokenValidity,
                                            String productName, String channel,
                                            Integer serviceInterval, Integer serviceIntervalUnit,
                                            Integer tokenType){
@@ -284,7 +309,7 @@ public class Integrator {
                 .replaceAll("country_currency",currency)
                 .replaceAll("service_description",description)
                 .replaceAll("notification_url",getServiceConfig().getEndpoint())
-                .replaceAll("token_validity", String.valueOf(tokeValidity))
+                .replaceAll("token_validity", String.valueOf(tokenValidity))
                 .replaceAll("product_name", productName)
                 .replaceAll("total_amount", String.valueOf(amount))
                 .replaceAll("chan_nel", channel)
@@ -303,7 +328,8 @@ public class Integrator {
 
 
     /**
-     *  Query user authorization status
+     *  Query user authorization status using the
+     *  token returned from user authorization request
      *
      * @param phoneNumber The user's phone number
      * @param transactionId Unique id to identify transaction
@@ -329,6 +355,13 @@ public class Integrator {
         }
     }
 
+    /**
+     * Query List of available authorization request
+     * status by a user
+     * @param phoneNumber the user who's authorization we want to query
+     * @param operation The category of operation authorization we are interested in
+     *                  {0: ALL PENDING, 1: ALL APPROVED, 2: ALL}
+     * */
     public Status sendQueryAuthorizationListRequest(String phoneNumber, Integer operation){
         String xmlRequest = FileUtil.loadXmlFile("xml/mtn-query-authorization-list-request.xml")
                 .replaceAll("sp_id", getServiceConfig().getSpId())
@@ -339,7 +372,47 @@ public class Integrator {
         Status<String> postStatus = SdpConnector.post(getUrlConfig().getAuthorization(), xmlRequest);
         if(postStatus.getStatus()){
             String xmlResponse = postStatus.getData();
-            return MtnXmlParser.parseMtnAuthQueryResponse(xmlResponse);
+            return MtnXmlParser.parseMtnAuthQueryListResponse(xmlResponse);
+        }else{
+            return postStatus;
+        }
+    }
+
+    public Status startUssdNotification(){
+
+        String xmlRequest = FileUtil.loadXmlFile("xml/mtn-start-ussd-notification.xml")
+                .replaceAll("sp_id", getServiceConfig().getSpId())
+                .replaceAll("sp_password",getServiceConfig().getSpPassword())
+                .replaceAll("service_id",getServiceConfig().getServiceId())
+                .replaceAll("time_stamp",getServiceConfig().getTimestamp())
+                .replaceAll("notify_url_end_point",getServiceConfig().getEndpoint())
+                .replaceAll("ussd_service_activation_number",getServiceConfig().getUssdServiceActivationNumber())
+                .replaceAll("correlator_ref", getServiceConfig().getCorrelator());
+
+        Status<String> postStatus = SdpConnector.post(getUrlConfig().getStartUssd(), xmlRequest);
+
+        if(postStatus.getStatus()){
+            String xmlResponse = postStatus.getData();
+            return MtnXmlParser.parseMtnStartUssdStartNotification(xmlResponse);
+        }else{
+            return postStatus;
+        }
+    }
+
+    public Status stopUssdNotification(){
+
+        String xmlRequest = FileUtil.loadXmlFile("xml/mtn-stop-ussd-notification.xml")
+                .replaceAll("sp_id", getServiceConfig().getSpId())
+                .replaceAll("sp_password",getServiceConfig().getSpPassword())
+                .replaceAll("service_id",getServiceConfig().getServiceId())
+                .replaceAll("time_stamp",getServiceConfig().getTimestamp())
+                .replaceAll("correlator_ref", getServiceConfig().getCorrelator());
+
+        Status<String> postStatus = SdpConnector.post(getUrlConfig().getStartUssd(), xmlRequest);
+
+        if(postStatus.getStatus()){
+            String xmlResponse = postStatus.getData();
+            return MtnXmlParser.parseMtnStartUssdStartNotification(xmlResponse);
         }else{
             return postStatus;
         }
@@ -372,6 +445,5 @@ public class Integrator {
             return new Integrator(this.urlConfig, this.serviceConfig);
         }
     }
-
 
 }

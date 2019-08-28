@@ -9,7 +9,6 @@ import java.util.Objects;
 public class AuthResponse implements Serializable {
 
     private String code;
-
     private String description;
 
     private String tokenStatus;
@@ -98,11 +97,13 @@ public class AuthResponse implements Serializable {
         Map<String, Object> result = (Map<String, Object>) queryAuthorizationResponse.get("result");
         this.code = (String)result.get("resultCode");
         this.description = (String)result.get("resultDescription");
-        Map<String, Object> authorizationInfo = (Map<String, Object>) queryAuthorizationResponse.get("authorizationInfo");
-        this.tokenStatus = (String)authorizationInfo.getOrDefault("accessTokenStatus", "");
-        this.accessToken = (String)authorizationInfo.get("accessToken");
-        this.tokenValidity = (String)authorizationInfo.get("tokenValidity");
-        this.totalAmount = Integer.parseInt((String)authorizationInfo.get("totalAmount"));
+        if(Objects.nonNull(queryAuthorizationResponse.get("authorizationInfo"))){
+            Map<String, Object> authorizationInfo = (Map<String, Object>) queryAuthorizationResponse.get("authorizationInfo");
+            this.tokenStatus = (String)authorizationInfo.getOrDefault("accessTokenStatus", "");
+            this.accessToken = (String)authorizationInfo.get("accessToken");
+            this.tokenValidity = (String)authorizationInfo.get("tokenValidity");
+            this.totalAmount = Integer.parseInt((String)authorizationInfo.get("totalAmount"));
+        }
     }
 
     @Override

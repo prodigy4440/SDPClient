@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <?xml version="1.0" encoding="utf-8" ?>
+    <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <soapenv:Body>
+            <ns1:queryAuthorizationResponse xmlns:ns1="http://www.csapi.org/schema/authorization/local/v1_0">
+                <ns1:result>
+                    <resultCode>4</resultCode>
+                    <resultDescription>No data found</resultDescription>
+                </ns1:result>
+            </ns1:queryAuthorizationResponse>
+        </soapenv:Body>
+    </soapenv:Envelope>
+

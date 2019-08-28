@@ -235,7 +235,7 @@ public class MtnXmlParser {
 
     public static Status<AuthQueryList> parseMtnAuthQueryListResponse(String xml){
         try {
-            AuthQueryList authQueryList = JsonUtil.xmlToPojoViaJson(xml, AuthQueryList.class);
+            AuthQueryList authQueryList = JsonUtil.xmlStraightToPojo(xml, AuthQueryList.class);
             return new Status<>(true, "Success", authQueryList);
         }catch (IOException ioe){
             ioe.printStackTrace();
@@ -279,22 +279,6 @@ public class MtnXmlParser {
             logger.error("IOException", e);
             return new Status<>(false, e.getLocalizedMessage());
         }
-    }
-
-    public static void main(String args []) throws IOException {
-        String xml = FileUtil.loadXmlFile("xml/not-used/query-response.xml");
-
-        AuthQueryList authQueryList = JsonUtil.xmlStraightToPojo(xml, AuthQueryList.class);
-        System.out.println(authQueryList);
-//
-//        SimpleModule module = new SimpleModule().addDeserializer(Object.class,
-//                JsonUtil.Issue205FixedUntypedObjectDeserializer.getInstance());
-//        XmlMapper xmlMapper = (XmlMapper) new XmlMapper().registerModule(module);
-//
-//        AuthQueryList authQueryList = xmlMapper.readValue(xml, AuthQueryList.class);
-//        System.out.println(authQueryList);
-//        new ObjectMapper().readValue(object.toString(), AuthQueryList.class);
-//        System.out.println(object.toString());
     }
 
 }
