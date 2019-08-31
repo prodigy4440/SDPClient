@@ -29,16 +29,16 @@ public class SDPClient {
     private static Logger logger = LoggerFactory.getLogger(SDPClient.class);
 
     public static void main(String[] args) {
-//
+
         UrlConfig urlConfig = new UrlConfig.Builder().build();
         ServiceConfig nimcService = new ServiceConfig.Builder()
                 .setSpId("2340110005999")
                 .setSpPassword("F0E139532F43210A1DB9077C4B0FD06E")
                 .setTimestamp("20190313095640")
-                .setServiceId("234012000024089")
-                .setProductId("23401220000027990")
-                .setUssdServiceActivationNumber("*346*1#")
-                .setCorrelator("234012000023788")
+                .setServiceId("234012000024093")
+                .setProductId("23401220000028006")
+                .setUssdServiceActivationNumber("*346")
+                .setCorrelator("2348131631151")
                 .setEndpoint("http://154.113.0.202:8087/api/v1.0/ussd/notify")
                 .build();
 
@@ -48,7 +48,8 @@ public class SDPClient {
                 .build();
 
 
-        Status status = nimcIntegrator.startUssdNotification();
+//        Status status = nimcIntegrator.startUssdNotification();
+        Status status = nimcIntegrator.stopUssdNotification();
         logger.info("{}", status);
 
 //        String transactionId = TransactionUtil.generateTransactionId(MtnUrl.IP(),1,4);

@@ -177,6 +177,21 @@ public class MtnXmlParser {
 
     }
 
+    public static Status parseMtnStopUssdStopNotification(String xml) {
+        JSONObject bodyJson = extractXmlBodyAsJson(xml);
+        try {
+            JSONObject jsonObject = bodyJson.getJSONObject("ns1:stopUSSDNotificationResponse");
+            if (Objects.nonNull(jsonObject)) {
+                return new Status(true, "Success", xml);
+            } else {
+                return new Status(false, bodyJson.getJSONObject("soapenv:Fault").getString("faultstring"));
+            }
+        } catch (JSONException je) {
+            return new Status(false, bodyJson.getJSONObject("soapenv:Fault").getString("faultstring"));
+        }
+
+    }
+
     public static Status parseMtnUssdNotificationReception(String xml) {
         Ussd ussd = null;
 

@@ -220,7 +220,7 @@ public class Integrator {
                 .replaceAll("sp_password",getServiceConfig().getSpPassword())
                 .replaceAll("bundle_id",getServiceConfig().getBundleId())
                 .replaceAll("time_stamp",getServiceConfig().getTimestamp())
-                .replaceAll("service_id", getServiceConfig().getTimestamp())
+                .replaceAll("service_id", getServiceConfig().getServiceId())
                 .replaceAll("fake_oa",getServiceConfig().getOa())
                 .replaceAll("fake_fa",getServiceConfig().getFa())
                 .replaceAll("msg_type", String.valueOf(msgType))
@@ -254,9 +254,11 @@ public class Integrator {
                 .replaceAll("fake_oa",getServiceConfig().getOa())
                 .replaceAll("fake_fa",getServiceConfig().getFa())
                 .replaceAll("sender_cb", senderCb)
-                .replaceAll("receive_cb", receiverCb)
+                .replaceAll("receiver_cb", receiverCb)
                 .replaceAll("abort_reason", abortReason);
-
+        System.out.println(serviceConfig.getOa());
+        System.out.println(serviceConfig.getFa());
+        System.out.println(xmlRequest);
         Status<String> postStatus = SdpConnector.post(getUrlConfig().getSendUssd(), xmlRequest);
         if(postStatus.getStatus()){
             String xmlResponse = postStatus.getData();
@@ -412,7 +414,7 @@ public class Integrator {
 
         if(postStatus.getStatus()){
             String xmlResponse = postStatus.getData();
-            return MtnXmlParser.parseMtnStartUssdStartNotification(xmlResponse);
+            return MtnXmlParser.parseMtnStopUssdStopNotification(xmlResponse);
         }else{
             return postStatus;
         }
