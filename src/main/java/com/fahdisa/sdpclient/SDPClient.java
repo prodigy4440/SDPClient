@@ -8,12 +8,20 @@ package com.fahdisa.sdpclient;
 import com.fahdisa.sdpclient.config.ServiceConfig;
 import com.fahdisa.sdpclient.config.UrlConfig;
 import com.fahdisa.sdpclient.model.Status;
+import com.fahdisa.sdpclient.model.config.SdpConfig;
 import com.fahdisa.sdpclient.network.SdpConnector;
 import com.fahdisa.sdpclient.parser.MtnXmlParser;
 import com.fahdisa.sdpclient.util.*;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -28,18 +36,33 @@ public class SDPClient {
 
     private static Logger logger = LoggerFactory.getLogger(SDPClient.class);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+
+        Path paths = Paths.get("dp-sdp-config.json");
+        String jsonConfig = Files.readAllLines(paths).stream().collect(Collectors.joining());
+        List<SdpConfig> sdpConfigs = Arrays.asList(JsonUtil.getJsonMapper().readValue(jsonConfig, SdpConfig[].class));
+        
+        SdpConfig sdpConfig = null;
+
+        for (SdpConfig sdpCon :
+                sdpConfigs) {
+            if(sdpCon.getName().equalsIgnoreCase("nimc-ussd-menu")){
+                sdpConfig = sdpCon;
+            }
+        }
+
+        System.out.println(sdpConfig);
 
         UrlConfig urlConfig = new UrlConfig.Builder().build();
         ServiceConfig nimcService = new ServiceConfig.Builder()
-                .setSpId("2340110005999")
-                .setSpPassword("F0E139532F43210A1DB9077C4B0FD06E")
-                .setTimestamp("20190313095640")
-                .setServiceId("234012000024093")
-                .setProductId("23401220000028006")
-                .setUssdServiceActivationNumber("*346")
-                .setCorrelator("2348131631151")
-                .setEndpoint("http://154.113.0.202:8087/api/v1.0/ussd/notify")
+                .setSpId(sdpConfig.getSpId())
+                .setSpPassword(sdpConfig.getSpPassword())
+                .setTimestamp(sdpConfig.getTimestamp())
+                .setServiceId(sdpConfig.getServiceId())
+                .setProductId(sdpConfig.getProductId())
+                .setUssdServiceActivationNumber(sdpConfig.getUssdServiceActivationNumber())
+                .setCorrelator(sdpConfig.getCorrelator())
+                .setEndpoint(sdpConfig.getEndpoint())
                 .build();
 
         Integrator nimcIntegrator = new Integrator.Builder()
@@ -48,8 +71,7 @@ public class SDPClient {
                 .build();
 
 
-//        Status status = nimcIntegrator.startUssdNotification();
-        Status status = nimcIntegrator.stopUssdNotification();
+        Status status = nimcIntegrator.chargePhone("08131631151","",2000);
         logger.info("{}", status);
 
 //        String transactionId = TransactionUtil.generateTransactionId(MtnUrl.IP(),1,4);
@@ -316,197 +338,4 @@ public class SDPClient {
             return new Status(false, e.getMessage());
         }
     }
-
-    public static Status startUssdNotification(String spId, String spPassword, String serviceId, String timeStamp,
-                                 String notifyUrl, String activationNumber, String correlator){
-
-        String xmlRequest = FileUtil.loadXmlFile("xml/mtn-start-ussd-notification.xml")
-                .replaceAll("sp_id", spId)
-                .replaceAll("sp_password",spPassword)
-                .replaceAll("service_id",serviceId)
-                .replaceAll("time_stamp",timeStamp)
-                .replaceAll("notify_url_end_point",notifyUrl)
-                .replaceAll("ussd_service_activation_number",activationNumber)
-                .replaceAll("correlator_ref", correlator);
-
-        MediaType mediaType = MediaType.parse("application/xml");
-        RequestBody requestBody = RequestBody.create(mediaType, xmlRequest);
-
-        Request request = new Request.Builder()
-                .url(MtnUrl.START_USSD())
-                .post(requestBody)
-                .addHeader("SOAPAction","")
-                .build();
-
-        try {
-            Response response = OkHttpUtil.getHttpClient().newCall(request).execute();
-            String xmlResponse = response.body().string();
-            Status status = MtnXmlParser.parseMtnStartUssdStartNotification(xmlResponse);
-            return status;
-        } catch (IOException e) {
-            return new Status(false, e.getMessage());
-        }
-    }
-
-    public static Status stopUssdNotification(String spId, String spPassword, String serviceId, String timeStamp,
-                                               String correlator){
-
-        String xmlRequest = FileUtil.loadXmlFile("xml/mtn-stop-ussd-notification.xml")
-                .replaceAll("sp_id", spId)
-                .replaceAll("sp_password",spPassword)
-                .replaceAll("service_id",serviceId)
-                .replaceAll("time_stamp",timeStamp)
-                .replaceAll("correlator_ref", correlator);
-
-        MediaType mediaType = MediaType.parse("application/xml");
-        RequestBody requestBody = RequestBody.create(mediaType, xmlRequest);
-
-        Request request = new Request.Builder()
-                .url(MtnUrl.START_USSD())
-                .post(requestBody)
-                .addHeader("SOAPAction","")
-                .build();
-
-        try {
-            Response response = OkHttpUtil.getHttpClient().newCall(request).execute();
-            String xmlResponse = response.body().string();
-            Status status = MtnXmlParser.parseMtnStartUssdStartNotification(xmlResponse);
-            return status;
-        } catch (IOException e) {
-            return new Status(false, e.getMessage());
-        }
-    }
-
-    public static Status sendUssd(String spId, String spPassword, String serviceId, String bundleId, String timestamp,
-                                  String oa, String fa, Integer msgType, String senderCb,
-                                  String receiverCb, Integer msgOpType, String msisdn, String serviceCode,
-                                  String codeScheme, String ussdString){
-
-        String xmlRequest = FileUtil.loadXmlFile("xml/mtn-send-ussd-request.xml")
-                .replaceAll("sp_id", spId)
-                .replaceAll("sp_password",spPassword)
-                .replaceAll("bundle_id",bundleId)
-                .replaceAll("time_stamp",timestamp)
-                .replaceAll("service_id", serviceId)
-                .replaceAll("fake_oa",oa)
-                .replaceAll("fake_fa",fa)
-                .replaceAll("msg_type", String.valueOf(msgType))
-                .replaceAll("sender_cb", senderCb)
-                .replaceAll("receive_cb", receiverCb)
-                .replaceAll("ussd_op_type", String.valueOf(msgOpType))
-                .replaceAll("user_phone_number", msisdn)
-                .replaceAll("service_code", serviceCode)
-                .replaceAll("code_scheme", codeScheme)
-                .replaceAll("ussd_string",ussdString);
-
-        MediaType mediaType = MediaType.parse("application/xml");
-        RequestBody requestBody = RequestBody.create(mediaType, xmlRequest);
-
-        Request request = new Request.Builder()
-                .url(MtnUrl.SEND_USSD())
-                .post(requestBody).build();
-
-        try {
-            Response response = OkHttpUtil.getHttpClient().newCall(request).execute();
-            String xmlResponse = response.body().string();
-            Status status = MtnXmlParser.parseMtnSendUssd(xmlResponse);
-            return status;
-        } catch (IOException e) {
-            return new Status(false, e.getMessage());
-        }
-    }
-
-    public static Status sendUssdAbort(String spId, String spPassword, String serviceId,
-                                       String timestamp, String oa, String fa,
-                                       String senderCb, String receiverCb, String abortReason){
-        String xmlRequest = FileUtil.loadXmlFile("xml/mtn-send-ussd-abort-request.xml")
-                .replaceAll("sp_id", spId)
-                .replaceAll("sp_password",spPassword)
-                .replaceAll("service_id",serviceId)
-                .replaceAll("time_stamp",timestamp)
-                .replaceAll("fake_oa",oa)
-                .replaceAll("fake_fa",fa)
-                .replaceAll("sender_cb", senderCb)
-                .replaceAll("receive_cb", receiverCb)
-                .replaceAll("abort_reason", abortReason);
-        MediaType mediaType = MediaType.parse("application/xml");
-        RequestBody requestBody = RequestBody.create(mediaType, xmlRequest);
-
-        Request request = new Request.Builder()
-                .url(MtnUrl.SEND_USSD())
-                .post(requestBody).build();
-
-        try {
-            Response response = OkHttpUtil.getHttpClient().newCall(request).execute();
-            String xmlResponse = response.body().string();
-            Status status = MtnXmlParser.parseMtnAbortUssd(xmlResponse);
-            return status;
-        } catch (IOException e) {
-            return new Status(false, e.getMessage());
-        }
-    }
-
-
-    public static Status sendAuthorizationRequest(String spId, String spPassword, String timestamp,
-                                                  String serviceId, String phoneNumber,
-                                                  String transactionId, Integer scope,
-                                       Integer amount, String currency, String description,
-                                                  Integer frequency){
-        String xmlRequest = FileUtil.loadXmlFile("xml/mtn-authorization-request.xml")
-                .replaceAll("sp_id", spId)
-                .replaceAll("sp_password",spPassword)
-                .replaceAll("time_stamp",timestamp)
-                .replaceAll("end_user_identifier",phoneNumber)
-                .replaceAll("transaction_id",transactionId)
-                .replaceAll("auth_scope",String.valueOf(scope))
-                .replaceAll("service_id",serviceId)
-                .replaceAll("service_amount",String.valueOf(amount))
-                .replaceAll("country_currency",currency)
-                .replaceAll("service_description",description)
-                .replaceAll("auth_frequency", String.valueOf(frequency));
-
-        System.out.println(xmlRequest);
-        MediaType mediaType = MediaType.parse("application/xml");
-        RequestBody requestBody = RequestBody.create(mediaType, xmlRequest);
-
-        Request request = new Request.Builder()
-                .url(MtnUrl.AUTHORIZATION())
-                .post(requestBody).build();
-
-        try {
-            Response response = OkHttpUtil.getHttpClient().newCall(request).execute();
-            String xmlResponse = response.body().string();
-            System.out.println(xmlResponse);
-            Status status = MtnXmlParser.parserMtnAuthorizationRequest(xmlResponse);
-            return status;
-        } catch (IOException e) {
-            return new Status(false, e.getMessage());
-        }
-    }
-
-    public static Status sendAuthorizationRequest(UrlConfig urlConfig, ServiceConfig serviceConfig, String phoneNumber,
-                                                  String transactionId, Integer scope,
-                                                  Integer amount, String currency, String description,
-                                                  Integer frequency){
-        String xmlRequest = FileUtil.loadXmlFile("xml/mtn-authorization-request.xml")
-                .replaceAll("sp_id", serviceConfig.getSpId())
-                .replaceAll("sp_password",serviceConfig.getSpPassword())
-                .replaceAll("time_stamp",serviceConfig.getTimestamp())
-                .replaceAll("end_user_identifier",phoneNumber)
-                .replaceAll("transaction_id",transactionId)
-                .replaceAll("auth_scope",String.valueOf(scope))
-                .replaceAll("service_id",serviceConfig.getServiceId())
-                .replaceAll("service_amount",String.valueOf(amount))
-                .replaceAll("country_currency",currency)
-                .replaceAll("service_description",description)
-                .replaceAll("auth_frequency", String.valueOf(frequency));
-        Status<String> postStatus = SdpConnector.post(urlConfig.getAuthorization(), xmlRequest);
-        if(postStatus.getStatus()){
-            String xmlResponse = postStatus.getData();
-            return MtnXmlParser.parserMtnAuthorizationRequest(xmlResponse);
-        }else{
-            return postStatus;
-        }
-    }
-
 }

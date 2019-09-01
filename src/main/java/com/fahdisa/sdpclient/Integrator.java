@@ -53,7 +53,7 @@ public class Integrator {
 //                .replaceAll("product_id", getServiceConfig().getProductId())
                 .replaceAll("authorization_token", authorizationToken)
                 .replaceAll("service_id", getServiceConfig().getServiceId())
-                .replaceAll("charge_amount", String.valueOf(amount))
+                .replaceAll("charge_amount", String.valueOf(amount*100))
                 .replaceAll("end_user_phone_number", phoneNumber);
 
         Status<String> postStatus = SdpConnector.post(getUrlConfig().getChargeUrl(), xmlRequest);
