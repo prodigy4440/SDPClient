@@ -1,5 +1,6 @@
 package com.fahdisa.sdpclient.util;
 
+import com.fahdisa.sdpclient.model.sms.delivery.DeliveryStatus;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -118,6 +119,6 @@ public class JsonUtil<T> {
             return valueByKey;
 
         }
-
     }
+
 }

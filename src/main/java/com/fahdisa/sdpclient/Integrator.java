@@ -167,6 +167,30 @@ public class Integrator {
         }
     }
 
+
+    public Status getSmsDeliveryStatus(String requestIdentifier){
+
+        String xmlRequest = FileUtil.loadXmlFile("xml/mtn-sms-delivery-status.xml")
+                .replaceAll("sp_id", getServiceConfig().getSpId())
+                .replaceAll("sp_password",getServiceConfig().getSpPassword())
+                .replaceAll("service_id",getServiceConfig().getServiceId())
+                .replaceAll("time_stamp",getServiceConfig().getTimestamp())
+                .replaceAll("request_identifier", getServiceConfig().getCorrelator());
+
+        Status<String> postStatus = SdpConnector.post(getUrlConfig().getSendSms(), xmlRequest);
+
+        if(postStatus.getStatus()){
+            String xmlResponse = postStatus.getData();
+            if(xmlResponse.contains("faultstring")){
+                return MtnXmlParser.parseFault(xmlResponse);
+            }else{
+                return MtnXmlParser.parseMtnSendSms(xmlResponse);
+            }
+        }else{
+            return postStatus;
+        }
+    }
+
     public Status startSmsNotification(){
         String xmlRequest = FileUtil.loadXmlFile("xml/mtn-start-sms-notification.xml")
                 .replaceAll("sp_id", getServiceConfig().getSpId())
