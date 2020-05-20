@@ -9,9 +9,17 @@ import com.fahdisa.sdpclient.config.ServiceConfig;
 import com.fahdisa.sdpclient.config.UrlConfig;
 import com.fahdisa.sdpclient.model.Status;
 import com.fahdisa.sdpclient.model.config.SdpConfig;
-import com.fahdisa.sdpclient.network.SdpConnector;
 import com.fahdisa.sdpclient.parser.MtnXmlParser;
-import com.fahdisa.sdpclient.util.*;
+import com.fahdisa.sdpclient.util.FileUtil;
+import com.fahdisa.sdpclient.util.JsonUtil;
+import com.fahdisa.sdpclient.util.MtnUrl;
+import com.fahdisa.sdpclient.util.OkHttpUtil;
+import okhttp3.MediaType;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,14 +28,6 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import okhttp3.MediaType;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author prodigy4440
@@ -41,7 +41,7 @@ public class SDPClient {
         Path paths = Paths.get("dp-sdp-config.json");
         String jsonConfig = Files.readAllLines(paths).stream().collect(Collectors.joining());
         List<SdpConfig> sdpConfigs = Arrays.asList(JsonUtil.getJsonMapper().readValue(jsonConfig, SdpConfig[].class));
-        
+
         SdpConfig sdpConfig = null;
 
         for (SdpConfig sdpCon :
